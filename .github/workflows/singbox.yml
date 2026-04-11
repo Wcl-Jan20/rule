@@ -141,8 +141,20 @@ jobs:
                   return obj  
           def parse_list_file(link, output_directory):
               try:
+                  if '@' in link:
+                      parts = link.rsplit('@', 1)
+                      url = parts[0]
+                      custom_name = parts[1] if len(parts) > 1 and '/' not in parts[1] else None
+                      if custom_name:
+                          base_filename = custom_name
+                      else:
+                          base_filename = os.path.basename(url).split('.')[0]
+                  else:
+                      url = link
+                      base_filename = os.path.basename(url).split('.')[0]
+                  
                   with concurrent.futures.ThreadPoolExecutor() as executor:
-                      results= list(executor.map(parse_and_convert_to_dataframe, [link]))
+                      results= list(executor.map(parse_and_convert_to_dataframe, [url]))
                       dfs = [df for df, rules in results]
                       rules_list = [rules for df, rules in results]
                       df = pd.concat(dfs, ignore_index=True)
@@ -165,7 +177,7 @@ jobs:
                       domain_entries = list(set(domain_entries))
                       if domain_entries:
                           result_rules["rules"].insert(0, {'domain': domain_entries})
-                      file_name = os.path.join(output_directory, f"{os.path.basename(link).split('.')[0]}.json")
+                      file_name = os.path.join(output_directory, f"{base_filename}.json")
                       with open(file_name, 'w', encoding='utf-8') as output_file:
                           result_rules_str = json.dumps(sort_dict(result_rules), ensure_ascii=False, indent=2)
                           result_rules_str = result_rules_str.replace('\\\\', '\\')
