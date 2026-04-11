@@ -1,4 +1,4 @@
-name: mihomo rules
+name: mihomo
 on:
   push:
     branches:
