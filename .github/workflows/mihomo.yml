@@ -1,0 +1,174 @@
+name: mihomo
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+  schedule:
+    - cron: "0 20 * * *"
+permissions:
+  contents: write
+jobs:
+  convert:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Install Mihomo
+        shell: bash
+        run: |
+          curl -L -o mihomo.deb https://github.com/MetaCubeX/mihomo/releases/download/v1.19.23/mihomo-linux-amd64-v1.19.23.deb
+          mkdir -p temp_deb
+          dpkg -x mihomo.deb temp_deb
+          mv temp_deb/usr/bin/mihomo ./mihomo
+          chmod +x mihomo
+          rm -rf temp_deb mihomo.deb
+      - name: Process Rules
+        shell: bash
+        run: |
+          set -u
+          mkdir -p mihomo
+          while IFS= read -r line || [[ -n "$line" ]]; do
+            [[ "$line" =~ ^[[:space:]]*#.*$ ]] && continue
+            [[ -z "${line//[[:space:]]/}" ]] && continue
+            URL=""
+            FILENAME=""
+            if [[ "$line" == *"@"* ]]; then
+              LAST_PART="${line##*@}"
+              if [[ "$LAST_PART" != */* ]]; then
+                URL="${line%@*}"
+                FILENAME="$LAST_PART"
+              else
+                URL="$line"
+                FILENAME="$(basename "$URL")"
+                FILENAME="${FILENAME%%\?*}"
+                FILENAME="${FILENAME%.*}"
+              fi
+            else
+              URL="$line"
+              FILENAME="$(basename "$URL")"
+              FILENAME="${FILENAME%%\?*}"
+              FILENAME="${FILENAME%.*}"
+            fi
+            FILENAME="$(echo "$FILENAME" | tr -cd '[:alnum:]_-')"
+            [[ -z "$FILENAME" ]] && FILENAME="rule_$(date +%s)"
+            TXT_FILE="mihomo/${FILENAME}.txt"
+            TMP_FILE="mihomo/${FILENAME}.tmp"
+            MRS_FILE="mihomo/${FILENAME}.mrs"
+            echo "Processing: $URL -> $FILENAME"
+            if ! curl -sL -f --max-time 30 "$URL" -o "$TXT_FILE"; then
+              echo "Error: Failed to download $URL"
+              continue
+            fi
+            if [[ ! -s "$TXT_FILE" ]]; then
+              echo "Error: Downloaded file is empty for $URL"
+              rm -f "$TXT_FILE"
+              continue
+            fi
+            if grep -qE "^[[:space:]]*(IP-CIDR|IP-CIDR6|IP-ASN|SRC-IP-CIDR)" "$TXT_FILE" || \
+               grep -qE "^[[:space:]]*-[[:space:]]+(IP-CIDR|IP-CIDR6|IP-ASN|SRC-IP-CIDR)" "$TXT_FILE" || \
+               grep -qE "^[[:space:]]*([0-9]{1,3}\.){3}[0-9]{1,3}/[0-9]{1,2}[[:space:]]*$" "$TXT_FILE" || \
+               grep -qE "^[[:space:]]*([0-9a-fA-F]{0,4}:){2,7}[0-9a-fA-F]{0,4}/[0-9]{1,3}[[:space:]]*$" "$TXT_FILE"; then
+              BEHAVIOR="ipcidr"
+              grep -vE "^[[:space:]]*(#|!|$|payload:|DOMAIN|GEOIP|PROCESS-NAME|SRC-PORT|DST-PORT|MATCH)" "$TXT_FILE" | \
+              sed -E 's/^[[:space:]]*-[[:space:]]+//' | \
+              sed -E 's/^\|\|//g' | \
+              sed -E 's/\^$//g' | \
+              sed -E 's/^[[:space:]]*(IP-CIDR|IP-CIDR6|IP-ASN|SRC-IP-CIDR)[[:space:]]*,?[[:space:]]*//' | \
+              sed -E "s/^['\"+]?//; s/['\"+]?$//" | \
+              cut -d',' -f1 | \
+              sed 's/[[:space:]]//g' | \
+              grep -E "^(([0-9]{1,3}\.){3}[0-9]{1,3}/[0-9]{1,2}|([0-9a-fA-F]{0,4}:){2,7}[0-9a-fA-F]{0,4}/[0-9]{1,3})$" | \
+              sort -u > "$TMP_FILE"
+            else
+              BEHAVIOR="domain"
+              grep -vE "^[[:space:]]*(IP-CIDR|IP-CIDR6|IP-ASN|SRC-IP-CIDR|#|!|$|payload:|GEOIP|PROCESS-NAME|SRC-PORT|DST-PORT|MATCH)" "$TXT_FILE" | \
+              sed -E 's/^[[:space:]]*-[[:space:]]+//' | \
+              sed -E 's/^\|\|//g' | \
+              sed -E 's/\^$//g' | \
+              sed -E "s/^['\"+]?//; s/['\"+]?$//" | \
+              awk -F',' '
+              {
+                gsub(/[[:space:]]/, "", $1)
+                gsub(/[[:space:]]/, "", $2)
+                type=toupper($1)
+                val=$2
+                if (type=="DOMAIN-SUFFIX" && val!="") {
+                  print val
+                  print "." val
+                  next
+                }
+                if ((type=="DOMAIN" || type=="FULL" || type=="FULL:" || type=="FULL") && val!="") {
+                  print val
+                  next
+                }
+                if (type=="DOMAIN-KEYWORD" || type=="DOMAIN-REGEX") next
+                if (tolower($1) ~ /^domain:/ && $2=="") {
+                  sub(/^domain:/, "", $1)
+                  print $1
+                  next
+                }
+                if ($2=="") {
+                  print $1
+                  next
+                }
+              }
+              ' | \
+              sed -E 's/^domain://g' | \
+              sed -E 's/^\.\.+/./g' | \
+              sed -E 's/^\*\.?/./g' | \
+              sed -E 's/^\+\././g' | \
+              sed -E 's/_/*/g' | \
+              cut -d',' -f1 | \
+              sed 's/[[:space:]]//g' | \
+              grep -vE "^(no-resolve|force-remote-dns|keyword:|regexp:|\*|.*\*.*\*)$" | \
+              grep -v '^$' | \
+              sort -u > "$TMP_FILE"
+            fi
+            if [[ -s "$TMP_FILE" ]] && grep -q "[^[:space:]]" "$TMP_FILE"; then
+              ORIGINAL_COUNT="$(wc -l < "$TMP_FILE")"
+              if ./mihomo convert-ruleset "$BEHAVIOR" text "$TMP_FILE" "$MRS_FILE"; then
+                MRS_SIZE="$(stat -c%s "$MRS_FILE" 2>/dev/null || echo "0")"
+                echo "✓ Success: $FILENAME ($BEHAVIOR) - $ORIGINAL_COUNT rules -> ${MRS_SIZE} bytes"
+              else
+                echo "✗ Error: Failed to convert $FILENAME"
+                rm -f "$TXT_FILE" "$MRS_FILE"
+              fi
+            else
+              echo "⚠ Warning: No valid rules found in $FILENAME"
+              rm -f "$TXT_FILE" "$MRS_FILE"
+            fi
+            rm -f "$TMP_FILE"
+          done < mihomo.txt
+      - name: Verify Rules
+        shell: bash
+        run: |
+          echo "=== Conversion Summary ==="
+          echo ""
+          TOTAL_FILES=0
+          TOTAL_SIZE=0
+          for mrs in mihomo/*.mrs; do
+            [ -f "$mrs" ] || continue
+            BASENAME=$(basename "$mrs" .mrs)
+            MRS_SIZE=$(stat -c%s "$mrs" 2>/dev/null || echo "0")
+            echo "  $BASENAME.mrs -> ${MRS_SIZE} bytes"
+            TOTAL_FILES=$((TOTAL_FILES + 1))
+            TOTAL_SIZE=$((TOTAL_SIZE + MRS_SIZE))
+          done
+          echo ""
+          echo "Total: $TOTAL_FILES files, $TOTAL_SIZE bytes"
+      - name: Push to Repo
+        shell: bash
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add mihomo/*.mrs mihomo/*.txt
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+            exit 0
+          else
+            git commit -m "Update rules: $(date '+%Y-%m-%d %H:%M:%S')"
+            git push
+          fi
