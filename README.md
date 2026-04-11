@@ -11,7 +11,7 @@
   "tag": "adblock",
   "type": "remote",
   "format": "binary",
-  "url": "https://cdn.jsdelivr.net/gh/77160860/rule@singbox/rule/adblock.srs",
+  "url": "https://cdn.jsdelivr.net/gh/77160860/rule@main/singbox/adblock.srs",
   "download_detour": "DIRECT"
 }
 ```
@@ -20,7 +20,7 @@
   "tag": "filter",
   "type": "remote",
   "format": "source",
-  "url": "https://cdn.jsdelivr.net/gh/77160860/rule@singbox/rule/filter.json",
+  "url": "https://cdn.jsdelivr.net/gh/77160860/rule@main/singbox/filter.json",
   "download_detour": "DIRECT"
 }
 ```
