@@ -1,4 +1,4 @@
-name: mihomo
+name: mihomo rules
 on:
   push:
     branches:
@@ -22,8 +22,8 @@ jobs:
           curl -L -o mihomo.deb https://github.com/MetaCubeX/mihomo/releases/download/v1.19.23/mihomo-linux-amd64-v1.19.23.deb
           mkdir -p temp_deb
           dpkg -x mihomo.deb temp_deb
-          mv temp_deb/usr/bin/mihomo ./mihomo
-          chmod +x mihomo
+          mv temp_deb/usr/bin/mihomo ./mihomo-bin
+          chmod +x mihomo-bin
           rm -rf temp_deb mihomo.deb
       - name: Process Rules
         shell: bash
@@ -129,7 +129,7 @@ jobs:
             fi
             if [[ -s "$TMP_FILE" ]] && grep -q "[^[:space:]]" "$TMP_FILE"; then
               ORIGINAL_COUNT="$(wc -l < "$TMP_FILE")"
-              if ./mihomo convert-ruleset "$BEHAVIOR" text "$TMP_FILE" "$MRS_FILE"; then
+              if ./mihomo-bin convert-ruleset "$BEHAVIOR" text "$TMP_FILE" "$MRS_FILE"; then
                 MRS_SIZE="$(stat -c%s "$MRS_FILE" 2>/dev/null || echo "0")"
                 echo "✓ Success: $FILENAME ($BEHAVIOR) - $ORIGINAL_COUNT rules -> ${MRS_SIZE} bytes"
               else
