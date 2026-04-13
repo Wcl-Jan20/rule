@@ -49,24 +49,44 @@ jobs:
               response.raise_for_status()
               yaml_data = yaml.safe_load(response.text)
               return yaml_data  
+          def is_valid_ip_cidr(s):
+              s = s.strip()
+              if not s or s.startswith('#'):
+                  return False
+              try:
+                  ipaddress.ip_network(s, strict=False)
+                  return True
+              except:
+                  return False
           def read_list_from_url(url):
               headers = {'User-Agent': 'Mozilla/5.0'}
               response = requests.get(url, headers=headers)
-              if response.status_code == 200:
-                  csv_data = StringIO(response.text)
-                  df = pd.read_csv(csv_data, header=None, names=['pattern', 'address', 'other', 'other2', 'other3'], on_bad_lines='skip')
-              else:
-                  return None
+              if response.status_code != 200:
+                  return None, []
+              lines = response.text.strip().split('\n')
+              rows = []
+              for line in lines:
+                  line = line.strip()
+                  if not line or line.startswith('#'):
+                      continue
+                  if is_valid_ip_cidr(line):
+                      rows.append({'pattern': 'IP-CIDR', 'address': line, 'other': None, 'other2': None, 'other3': None})
+                  elif ',' in line:
+                      parts = [p.strip() for p in line.split(',')]
+                      rows.append({'pattern': parts[0] if len(parts) > 0 else '', 
+                                 'address': parts[1] if len(parts) > 1 else '', 
+                                 'other': parts[2] if len(parts) > 2 else None,
+                                 'other2': parts[3] if len(parts) > 3 else None,
+                                 'other3': parts[4] if len(parts) > 4 else None})
+                  else:
+                      rows.append({'pattern': 'DOMAIN', 'address': line, 'other': None, 'other2': None, 'other3': None})
+              df = pd.DataFrame(rows, columns=['pattern', 'address', 'other', 'other2', 'other3'])
               filtered_rows = []
               rules = []
               if 'AND' in df['pattern'].values:
                   and_rows = df[df['pattern'].str.contains('AND', na=False)]
                   for _, row in and_rows.iterrows():
-                      rule = {
-                          "type": "logical",
-                          "mode": "and",
-                          "rules": []
-                      }
+                      rule = {"type": "logical", "mode": "and", "rules": []}
                       pattern = ",".join(row.values.astype(str))
                       components = re.findall(r'\((.*?)\)', pattern)
                       for component in components:
@@ -75,12 +95,10 @@ jobs:
                                   match = re.search(f'{keyword},(.*)', component)
                                   if match:
                                       value = match.group(1)
-                                      rule["rules"].append({
-                                          MAP_DICT[keyword]: value
-                                      })
+                                      rule["rules"].append({MAP_DICT[keyword]: value})
                       rules.append(rule)
               for index, row in df.iterrows():
-                  if 'AND' not in row['pattern']:
+                  if 'AND' not in str(row['pattern']):
                       filtered_rows.append(row)
               df_filtered = pd.DataFrame(filtered_rows, columns=['pattern', 'address', 'other', 'other2', 'other3'])
               return df_filtered, rules  
@@ -152,13 +170,12 @@ jobs:
                   else:
                       url = link
                       base_filename = os.path.basename(url).split('.')[0]
-                  
                   with concurrent.futures.ThreadPoolExecutor() as executor:
                       results= list(executor.map(parse_and_convert_to_dataframe, [url]))
                       dfs = [df for df, rules in results]
                       rules_list = [rules for df, rules in results]
                       df = pd.concat(dfs, ignore_index=True)
-                      df = df[~df['pattern'].str.contains('#')].reset_index(drop=True)
+                      df = df[~df['pattern'].astype(str).str.contains('#')].reset_index(drop=True)
                       df = df[df['pattern'].isin(MAP_DICT.keys())].reset_index(drop=True)
                       df = df.drop_duplicates().reset_index(drop=True)
                       df['pattern'] = df['pattern'].replace(MAP_DICT)
@@ -184,11 +201,14 @@ jobs:
                           output_file.write(result_rules_str)  
                       srs_path = file_name.replace(".json", ".srs")
                       os.system(f"sing-box rule-set compile --output {srs_path} {file_name}")
+                      print(f"成功处理: {base_filename}, 规则数: {len(result_rules['rules'])}")
                       return file_name
               except Exception as e:
                   print(f'获取链接出错,已跳过:{link},原因:{str(e)}')
+                  import traceback
+                  traceback.print_exc()
                   pass
-          with open("../singbox.txt", 'r') as links_file:
+          with open("../rule.txt", 'r') as links_file:
               links = links_file.read().splitlines()  
           links = [l for l in links if l.strip() and not l.strip().startswith("#")]  
           output_dir = "./"
@@ -208,5 +228,6 @@ jobs:
             exit 0
           else
             git commit -m "Update rules"
+            git pull --rebase origin main
             git push
           fi
