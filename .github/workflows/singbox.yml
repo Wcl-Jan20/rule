@@ -12,7 +12,7 @@ jobs:
       - uses: actions/checkout@v2
       - name: "Setup sing-box"
         env:
-          SING_BOX_DEB_URL: "https://github.com/SagerNet/sing-box/releases/download/v1.13.6/sing-box_1.13.6_linux_amd64.deb"
+          SING_BOX_DEB_URL: "https://github.com/SagerNet/sing-box/releases/download/v1.13.7/sing-box_1.13.7_linux_amd64.deb"
         run: |
           set -Eeuo pipefail
           wget -O sing-box.deb $SING_BOX_DEB_URL
@@ -49,6 +49,12 @@ jobs:
               response.raise_for_status()
               yaml_data = yaml.safe_load(response.text)
               return yaml_data  
+          def is_valid_ip_cidr(s):
+              try:
+                  ipaddress.ip_network(s.strip(), strict=False)
+                  return True
+              except:
+                  return False
           def read_list_from_url(url):
               headers = {'User-Agent': 'Mozilla/5.0'}
               response = requests.get(url, headers=headers)
@@ -57,6 +63,11 @@ jobs:
                   df = pd.read_csv(csv_data, header=None, names=['pattern', 'address', 'other', 'other2', 'other3'], on_bad_lines='skip')
               else:
                   return None
+              for idx, row in df.iterrows():
+                  first_col = str(row['pattern']).strip()
+                  if is_valid_ip_cidr(first_col) and pd.isna(row['address']):
+                      df.at[idx, 'address'] = first_col
+                      df.at[idx, 'pattern'] = 'IP-CIDR'
               filtered_rows = []
               rules = []
               if 'AND' in df['pattern'].values:
@@ -152,7 +163,6 @@ jobs:
                   else:
                       url = link
                       base_filename = os.path.basename(url).split('.')[0]
-                  
                   with concurrent.futures.ThreadPoolExecutor() as executor:
                       results= list(executor.map(parse_and_convert_to_dataframe, [url]))
                       dfs = [df for df, rules in results]
@@ -209,4 +219,5 @@ jobs:
           else
             git commit -m "Update rules"
             git pull --rebase origin main
+            git push
           fi
