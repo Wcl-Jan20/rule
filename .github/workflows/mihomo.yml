@@ -141,7 +141,7 @@ jobs:
               rm -f "$TXT_FILE" "$MRS_FILE"
             fi
             rm -f "$TMP_FILE"
-          done < mihomo.txt
+          done < rule.txt
       - name: Verify Rules
         shell: bash
         run: |
