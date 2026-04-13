@@ -208,7 +208,7 @@ jobs:
                   import traceback
                   traceback.print_exc()
                   pass
-          with open("../singbox.txt", 'r') as links_file:
+          with open("../rule.txt", 'r') as links_file:
               links = links_file.read().splitlines()  
           links = [l for l in links if l.strip() and not l.strip().startswith("#")]  
           output_dir = "./"
