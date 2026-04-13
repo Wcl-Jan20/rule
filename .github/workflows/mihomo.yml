@@ -171,4 +171,5 @@ jobs:
           else
             git commit -m "Update rules: $(date '+%Y-%m-%d %H:%M:%S')"
             git pull --rebase origin main
+            git push
           fi
