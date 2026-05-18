@@ -71,6 +71,7 @@ DOMAIN-SUFFIX,iqiyizyimg.com
 DOMAIN-SUFFIX,wupgapy.cc
 DOMAIN-SUFFIX,hbmysy.com
 # emby
+DOMAIN-SUFFIX,ccwu.cc
 DOMAIN-SUFFIX,tmdb.org
 DOMAIN-SUFFIX,trakt.tv
 DOMAIN-SUFFIX,thetvdb.com
