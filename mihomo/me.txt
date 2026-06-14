@@ -71,7 +71,6 @@ DOMAIN-SUFFIX,iqiyizyimg.com
 DOMAIN-SUFFIX,wupgapy.cc
 DOMAIN-SUFFIX,hbmysy.com
 # emby
-DOMAIN-SUFFIX,ccwu.cc
 DOMAIN-SUFFIX,28.al
 DOMAIN-SUFFIX,shrekmedia.org
 DOMAIN-SUFFIX,eu.org
