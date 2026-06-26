@@ -3,6 +3,7 @@
     {
       "domain": [
         "cdn.jsdelivr.net",
+        "cdnjs.cloudflare.com",
         "fastly.jsdelivr.net",
         "testingcf.jsdelivr.net"
       ]
