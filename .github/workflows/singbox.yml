@@ -142,10 +142,9 @@ jobs:
                               if is_ipv4_or_ipv6(item):
                                   pattern = 'IP-CIDR'
                               else:
-                                  # 完全符合你的要求：+.apple.cn 和 .apple.cn 都转为 DOMAIN-SUFFIX
                                   if address.startswith('.') or address.startswith('+'):
                                       pattern = 'DOMAIN-SUFFIX'
-                                      address = address[1:]          # 去掉前缀 +. 或 .
+                                      address = address[1:]  
                                   else:
                                       pattern = 'DOMAIN'
                           else:
