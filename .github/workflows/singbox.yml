@@ -4,7 +4,7 @@ on:
     branches: [ main ]
   workflow_dispatch:
   schedule:
-    - cron: '0 20 * * *' 
+    - cron: '0 20 * * *'
 
 jobs:
   build:
@@ -34,7 +34,7 @@ jobs:
       - name: Run Python script (inline)
         working-directory: ./singbox/
         run: |
-          python3 < 'EOF'
+          python3 << 'EOF'
           import pandas as pd
           import re
           import concurrent.futures
@@ -86,7 +86,7 @@ jobs:
               for line in lines:
                   line = line.strip()
                   if not line or line.startswith('#'):
-                continue
+                      continue
                   if is_valid_ip_cidr(line):
                       rows.append({'pattern': 'IP-CIDR', 'address': line, 'other': None, 'other2': None, 'other3': None})
                   elif ',' in line:
@@ -96,7 +96,7 @@ jobs:
                                  'other': parts[2] if len(parts) > 2 else None,
                                  'other2': parts[3] if len(parts) > 3 else None,
                                  'other3': parts[4] if len(parts) > 4 else None})
-                else:
+                  else:
                       # 检查是否以 +. 或 . 开头
                       if line.startswith('+.') or line.startswith('.'):
                           pattern = 'DOMAIN-SUFFIX'
@@ -108,13 +108,13 @@ jobs:
               df = pd.DataFrame(rows, columns=['pattern', 'address', 'other', 'other2', 'other3'])
               filtered_rows = []
               rules = []
-              if'AND' in df['pattern'].values:
+              if 'AND' in df['pattern'].values:
                   and_rows = df[df['pattern'].str.contains('AND', na=False)]
                   for _, row in and_rows.iterrows():
                       rule = {"type": "logical", "mode": "and", "rules": []}
                       pattern = ",".join(row.values.astype(str))
                       components = re.findall(r'\((.*?)\)', pattern)
-                for component in components:
+                      for component in components:
                           for keyword in MAP_DICT.keys():
                               if keyword in component:
                                   match = re.search(f'{keyword},(.*)', component)
@@ -124,7 +124,7 @@ jobs:
                       rules.append(rule)
               for index, row in df.iterrows():
                   if 'AND' not in str(row['pattern']):
-                filtered_rows.append(row)
+                      filtered_rows.append(row)
               df_filtered = pd.DataFrame(filtered_rows, columns=['pattern', 'address', 'other', 'other2', 'other3'])
               return df_filtered, rules
 
@@ -134,9 +134,9 @@ jobs:
                   return 'ipv4'
               except ValueError:
                   try:
-                ipaddress.IPv6Network(address)
+                      ipaddress.IPv6Network(address)
                       return 'ipv6'
-                except ValueError:
+                  except ValueError:
                       return None
 
           def parse_and_convert_to_dataframe(link):
@@ -159,10 +159,10 @@ jobs:
                               else:
                                   # 检查是否以 +. 或 . 开头
                                   if address.startswith('+.') or address.startswith('.'):
-                      pattern = 'DOMAIN-SUFFIX'
+                                      pattern = 'DOMAIN-SUFFIX'
                                       address = normalize_address(address)
                                   else:
-                      pattern = 'DOMAIN'
+                                      pattern = 'DOMAIN'
                           else:
                               pattern, address = item.split(',', 1)
                               if ',' in address:
@@ -179,17 +179,17 @@ jobs:
               if isinstance(obj, dict):
                   return {k: sort_dict(obj[k]) for k in sorted(obj)}
               elif isinstance(obj, list) and all(isinstance(elem, dict) for elem in obj):
-                  return sorted([sort_dict(x) for x in obj], key=lambda d: sorted(d.keys()[0])
+                  return sorted([sort_dict(x) for x in obj], key=lambda d: sorted(d.keys())[0])
               elif isinstance(obj, list):
                   return sorted(sort_dict(x) for x in obj)
               else:
-                return obj
+                  return obj
 
           def parse_list_file(link, output_directory):
               try:
                   if '@' in link:
                       parts = link.rsplit('@', 1)
-                url = parts[0]
+                      url = parts[0]
                       custom_name = parts[1] if len(parts) > 1 and '/' not in parts[1] else None
                       if custom_name:
                           base_filename = custom_name
@@ -204,19 +204,19 @@ jobs:
                       dfs = [df for df, rules in results]
                       rules_list = [rules for df, rules in results]
                       df = pd.concat(dfs, ignore_index=True)
-                df = df[~df['pattern'].astype(str).str.contains('#')].reset_index(drop=True)
-                      df = df['pattern'].isin(MAP_DICT.keys())].reset_index(drop=True)
+                      df = df[~df['pattern'].astype(str).str.contains('#')].reset_index(drop=True)
+                      df = df[df['pattern'].isin(MAP_DICT.keys())].reset_index(drop=True)
                       df = df.drop_duplicates().reset_index(drop=True)
                       df['pattern'] = df['pattern'].replace(MAP_DICT)
 
                       os.makedirs(output_directory, exist_ok=True)
-                result_rules = {"version": 5, "rules": []}
+                      result_rules = {"version": 5, "rules": []}
                       domain_entries = []
 
                       for pattern, addresses in df.groupby('pattern')['address'].apply(list).to_dict().items():
                           if pattern == 'domain_suffix':
                               rule_entry = {pattern: [address.strip() for address in addresses]}
-                result_rules["rules"].append(rule_entry)
+                              result_rules["rules"].append(rule_entry)
                           elif pattern == 'domain':
                               domain_entries.extend([address.strip() for address in addresses])
                           else:
@@ -230,12 +230,12 @@ jobs:
                       file_name = os.path.join(output_directory, f"{base_filename}.json")
                       with open(file_name, 'w', encoding='utf-8') as output_file:
                           result_rules_str = json.dumps(sort_dict(result_rules), ensure_ascii=False, indent=2)
-                          result_rules_str = result_rules_str.replace('\\', '\\')
+                          result_rules_str = result_rules_str.replace('\\\\', '\\')
                           output_file.write(result_rules_str)
 
                       os.makedirs(os.path.dirname(file_name) or '.', exist_ok=True)
                       srs_path = file_name.replace(".json", ".srs")
-                result = subprocess.run(
+                      result = subprocess.run(
                           ["sing-box", "rule-set", "compile", "--output", srs_path, file_name],
                           capture_output=True, text=True
                       )
@@ -243,7 +243,7 @@ jobs:
                           print(f"[ERROR] SRS 编译失败 ({base_filename}): {result.stderr}")
                       else:
                           print(f"[OK] SRS 编译成功: {srs_path}")
-                print(f"成功处理: {base_filename}, 规则数: {len(result_rules['rules'])}")
+                      print(f"成功处理: {base_filename}, 规则数: {len(result_rules['rules'])}")
                       return file_name
               except Exception as e:
                   print(f'获取链接出错,已跳过:{link},原因:{str(e)}')
@@ -263,12 +263,13 @@ jobs:
               result_file_names.append(result_file_name)
 
           EOF
+
       - name: Commit and push config.json
         run: |
           git config --global user.email "action@github.com"
           git config --global user.name "GitHub Action"
           git add ./singbox/*.json
-          git ad ./singbox/*.srs
+          git add ./singbox/*.srs
           if git diff --staged --quiet; then
             echo "No changes to commit"
             exit 0
