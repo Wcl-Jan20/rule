@@ -119,7 +119,6 @@ jobs:
               sed -E 's/^domain://g' | \
               sed -E 's/^\.\.+/./g' | \
               sed -E 's/^\*\.?/./g' | \
-              sed -E 's/^\+\././g' | \
               sed -E 's/_/*/g' | \
               cut -d',' -f1 | \
               sed 's/[[:space:]]//g' | \
