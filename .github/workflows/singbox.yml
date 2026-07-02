@@ -5,6 +5,7 @@ on:
   workflow_dispatch:
   schedule:
     - cron: '0 20 * * *' 
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -142,9 +143,10 @@ jobs:
                               if is_ipv4_or_ipv6(item):
                                   pattern = 'IP-CIDR'
                               else:
+                                  # 完全符合你的要求：+.apple.cn 和 .apple.cn 都转为 DOMAIN-SUFFIX
                                   if address.startswith('.') or address.startswith('+'):
                                       pattern = 'DOMAIN-SUFFIX'
-                                      address = address[1:]  
+                                      address = address[1:]          # 去掉前缀 +. 或 .
                                   else:
                                       pattern = 'DOMAIN'
                           else:
@@ -217,6 +219,8 @@ jobs:
                           result_rules_str = result_rules_str.replace('\\\\', '\\')
                           output_file.write(result_rules_str)
 
+                      # 修复 SRS 编译：确保目录存在，否则会失败
+                      os.makedirs(os.path.dirname(srs_path), exist_ok=True)
                       srs_path = file_name.replace(".json", ".srs")
                       result = subprocess.run(
                           ["sing-box", "rule-set", "compile", "--output", srs_path, file_name],
