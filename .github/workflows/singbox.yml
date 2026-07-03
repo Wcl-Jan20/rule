@@ -14,7 +14,7 @@ jobs:
 
       - name: Setup sing-box
         env:
-          SING_BOX_DEB_URL: "https://github.com/SagerNet/sing-box/releases/download/v1.14.0-alpha.29/sing-box_1.14.0-alpha.29_linux_amd64.deb"
+          SING_BOX_DEB_URL: "https://github.com/SagerNet/sing-box/releases/download/v1.14.0-alpha.14/sing-box_1.14.0-alpha.14_linux_amd64.deb"
         run: |
           set -Eeuo pipefail
           wget -O sing-box.deb $SING_BOX_DEB_URL
@@ -44,9 +44,8 @@ jobs:
           import requests
           import yaml
           import ipaddress
-          from io import StringIO
           from collections import defaultdict
-          
+
           MAP_DICT = {
               'DOMAIN': 'domain',
               'HOST': 'domain',
@@ -68,7 +67,7 @@ jobs:
               'URL-REGEX': 'domain_regex',
               'DOMAIN-REGEX': 'domain_regex'
           }
-          
+
           RULE_ORDER = [
               'domain',
               'domain_suffix',
@@ -81,14 +80,14 @@ jobs:
               'port',
               'source_port'
           ]
-          
+
           def read_yaml_from_url(url):
               headers = {'User-Agent': 'Mozilla/5.0'}
               response = requests.get(url, headers=headers, timeout=10)
               response.raise_for_status()
               yaml_data = yaml.safe_load(response.text)
               return yaml_data
-          
+
           def is_valid_ip_cidr(s):
               s = s.strip()
               if not s or s.startswith('#'):
@@ -98,20 +97,20 @@ jobs:
                   return True
               except:
                   return False
-          
+
           def get_cidr_version(cidr_str):
               try:
                   net = ipaddress.ip_network(cidr_str, strict=False)
                   return 'ipv6_cidr' if isinstance(net, ipaddress.IPv6Network) else 'ip_cidr'
               except:
                   return None
-          
+
           def normalize_address(address):
               address = address.strip()
               while address.startswith('+') or address.startswith('.'):
                   address = address[1:]
               return address if address else None
-          
+
           def read_list_from_url(url):
               headers = {'User-Agent': 'Mozilla/5.0'}
               try:
@@ -161,7 +160,7 @@ jobs:
               
               df = pd.DataFrame(rows, columns=['pattern', 'address', 'other', 'other2', 'other3']) if rows else None
               return df, []
-          
+
           def parse_and_convert_to_dataframe(link):
               rules = []
               
@@ -212,7 +211,7 @@ jobs:
                   df, rules = read_list_from_url(link)
               
               return df, rules
-          
+
           def sort_dict(obj):
               if isinstance(obj, dict):
                   return {k: sort_dict(obj[k]) for k in sorted(obj)}
@@ -222,7 +221,7 @@ jobs:
                   return [sort_dict(x) for x in obj]
               else:
                   return obj
-          
+
           def build_result_rules(df, rules_list):
               result_rules = {
                   "version": 5,
@@ -244,14 +243,17 @@ jobs:
                       if pd.isna(address) or not str(address).strip():
                           continue
                       
-                      if pattern == 'IP-CIDR':
-                          actual_pattern = get_cidr_version(str(address))
-                          if actual_pattern:
-                              pattern = actual_pattern
-                      
                       if pattern in MAP_DICT:
                           mapped_pattern = MAP_DICT[pattern]
-                          pattern_groups[mapped_pattern].append(str(address).strip())
+                          
+                          if mapped_pattern == 'ip_cidr':
+                              cidr_version = get_cidr_version(str(address))
+                              if cidr_version:
+                                  pattern_groups[cidr_version].append(str(address).strip())
+                              else:
+                                  pattern_groups[mapped_pattern].append(str(address).strip())
+                          else:
+                              pattern_groups[mapped_pattern].append(str(address).strip())
                   
                   for rule_type in RULE_ORDER:
                       if rule_type in pattern_groups:
@@ -262,7 +264,7 @@ jobs:
                           })
               
               return result_rules
-          
+
           def parse_list_file(link, output_directory):
               try:
                   if '@' in link:
@@ -289,6 +291,10 @@ jobs:
                       df = df[~df['pattern'].astype(str).str.contains('#', na=False)].reset_index(drop=True)
                       df = df[df['pattern'].isin(MAP_DICT.keys())].reset_index(drop=True)
                       df = df.drop_duplicates().reset_index(drop=True)
+                      
+                      print(f"[调试] 数据框行数: {len(df)}")
+                      if len(df) > 0:
+                          print(f"[调试] pattern 值: {df['pattern'].unique()}")
                   
                   result_rules = build_result_rules(df, rules_list)
                   
@@ -330,38 +336,39 @@ jobs:
                   import traceback
                   traceback.print_exc()
                   return None
-          
+
           print("=" * 60)
-          print("Sing-box 规则转换工具 (v2.0 - 改进版)")
+          print("Sing-box 规则转换工具 (v2.1 - 修复版)")
           print("=" * 60)
-          
+
           try:
               with open("../rule.txt", 'r', encoding='utf-8') as links_file:
                   links = links_file.read().splitlines()
           except FileNotFoundError:
               print("[✗] 错误: 未找到 rule.txt 文件")
               exit(1)
-          
+
           links = [l.strip() for l in links if l.strip() and not l.strip().startswith("#")]
-          
+
           if not links:
               print("[✗] 错误: rule.txt 中没有有效的链接")
               exit(1)
-          
+
           print(f"[信息] 检测到 {len(links)} 个规则链接\n")
-          
+
           output_dir = "./"
           result_file_names = []
-          
+
           for idx, link in enumerate(links, 1):
               print(f"\n[{idx}/{len(links)}] 处理链接:")
               result_file_name = parse_list_file(link, output_directory=output_dir)
               if result_file_name:
                   result_file_names.append(result_file_name)
-          
+
           print("\n" + "=" * 60)
           print(f"处理完成! 成功生成 {len(result_file_names)} 个规则文件")
           print("=" * 60)
+
           EOF
 
       - name: Commit and push rules
