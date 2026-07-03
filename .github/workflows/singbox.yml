@@ -10,7 +10,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4.2.0
 
       - name: Setup sing-box
         env:
@@ -22,7 +22,7 @@ jobs:
           sing-box version
 
       - name: Set up Python3
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5.2.0
         with:
           python-version: '3.11'
 
@@ -317,7 +317,7 @@ jobs:
                   return None
 
           print("=" * 60)
-          print("Sing-box 规则转换工具 (v2.3 - 最终版)")
+          print("Sing-box规则转换工具")
           print("=" * 60)
 
           try:
