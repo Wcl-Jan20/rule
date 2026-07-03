@@ -58,8 +58,8 @@ jobs:
               'host-keyword': 'domain_keyword',
               'IP-CIDR': 'ip_cidr',
               'ip-cidr': 'ip_cidr',
-              'IP-CIDR6': 'ipv6_cidr',
-              'IP6-CIDR': 'ipv6_cidr',
+              'IP-CIDR6': 'ip_cidr',
+              'IP6-CIDR': 'ip_cidr',
               'SRC-IP-CIDR': 'source_ip_cidr',
               'GEOIP': 'geoip',
               'DST-PORT': 'port',
@@ -74,7 +74,6 @@ jobs:
               'domain_keyword',
               'domain_regex',
               'ip_cidr',
-              'ipv6_cidr',
               'source_ip_cidr',
               'geoip',
               'port',
@@ -97,13 +96,6 @@ jobs:
                   return True
               except:
                   return False
-
-          def get_cidr_version(cidr_str):
-              try:
-                  net = ipaddress.ip_network(cidr_str, strict=False)
-                  return 'ipv6_cidr' if isinstance(net, ipaddress.IPv6Network) else 'ip_cidr'
-              except:
-                  return None
 
           def normalize_address(address):
               address = address.strip()
@@ -245,15 +237,7 @@ jobs:
                       
                       if pattern in MAP_DICT:
                           mapped_pattern = MAP_DICT[pattern]
-                          
-                          if mapped_pattern == 'ip_cidr':
-                              cidr_version = get_cidr_version(str(address))
-                              if cidr_version:
-                                  pattern_groups[cidr_version].append(str(address).strip())
-                              else:
-                                  pattern_groups[mapped_pattern].append(str(address).strip())
-                          else:
-                              pattern_groups[mapped_pattern].append(str(address).strip())
+                          pattern_groups[mapped_pattern].append(str(address).strip())
                   
                   for rule_type in RULE_ORDER:
                       if rule_type in pattern_groups:
@@ -291,10 +275,6 @@ jobs:
                       df = df[~df['pattern'].astype(str).str.contains('#', na=False)].reset_index(drop=True)
                       df = df[df['pattern'].isin(MAP_DICT.keys())].reset_index(drop=True)
                       df = df.drop_duplicates().reset_index(drop=True)
-                      
-                      print(f"[调试] 数据框行数: {len(df)}")
-                      if len(df) > 0:
-                          print(f"[调试] pattern 值: {df['pattern'].unique()}")
                   
                   result_rules = build_result_rules(df, rules_list)
                   
@@ -338,7 +318,7 @@ jobs:
                   return None
 
           print("=" * 60)
-          print("Sing-box 规则转换工具 (v2.1 - 修复版)")
+          print("Sing-box 规则转换工具 (v2.2 - 最终修复版)")
           print("=" * 60)
 
           try:
