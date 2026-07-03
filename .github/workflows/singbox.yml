@@ -155,24 +155,25 @@ jobs:
 
           def parse_and_convert_to_dataframe(link):
               rules = []
+              df = None
               
-              if link.endswith('.yaml') or link.endswith('.yml') or link.endswith('.txt'):
+              if link.endswith('.yaml') or link.endswith('.yml'):
                   try:
                       yaml_data = read_yaml_from_url(link)
                       rows = []
                       
-                      if not isinstance(yaml_data, str):
-                          items = yaml_data.get('payload', []) if isinstance(yaml_data, dict) else yaml_data
+                      if isinstance(yaml_data, dict):
+                          items = yaml_data.get('payload', [])
+                      elif isinstance(yaml_data, list):
+                          items = yaml_data
                       else:
-                          lines = yaml_data.splitlines()
-                          line_content = lines[0] if lines else ""
-                          items = line_content.split()
+                          items = []
                       
                       for item in items:
-                          address = item.strip("'\"")
+                          address = str(item).strip("'\"")
                           
-                          if ',' not in item:
-                              if is_valid_ip_cidr(item):
+                          if ',' not in str(item):
+                              if is_valid_ip_cidr(str(item)):
                                   pattern = 'IP-CIDR'
                               else:
                                   if address.startswith('+.') or address.startswith('.'):
@@ -181,9 +182,9 @@ jobs:
                                   else:
                                       pattern = 'DOMAIN'
                           else:
-                              pattern, address = item.split(',', 1)
-                              if ',' in address:
-                                  address = address.split(',', 1)[0]
+                              parts = str(item).split(',', 1)
+                              pattern = parts[0].strip()
+                              address = parts[1].strip() if len(parts) > 1 else ''
                           
                           if address:
                               rows.append({
@@ -194,10 +195,8 @@ jobs:
                       
                       if rows:
                           df = pd.DataFrame(rows, columns=['pattern', 'address', 'other'])
-                      else:
-                          df = None
                   except Exception as e:
-                      print(f"[WARNING] YAML 解析失败: {str(e)}")
+                      print(f"[WARNING] YAML 解析失败: {str(e)}, 使用纯文本解析")
                       df, rules = read_list_from_url(link)
               else:
                   df, rules = read_list_from_url(link)
@@ -318,7 +317,7 @@ jobs:
                   return None
 
           print("=" * 60)
-          print("Sing-box 规则转换工具 (v2.2 - 最终修复版)")
+          print("Sing-box 规则转换工具 (v2.3 - 最终版)")
           print("=" * 60)
 
           try:
