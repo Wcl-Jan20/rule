@@ -88,24 +88,32 @@ jobs:
               if line.startswith('#'):
                   return None
 
-              has_domain_prefix = line.startswith('DOMAIN,') or line.startswith('DOMAIN-SUFFIX,') or line.startswith('DOMAIN-KEYWORD,') or line.startswith('DOMAIN-REGEX,') or line.startswith('DOMAIN-FULL,') or line.startswith('PROCESS-NAME,')
-              has_plus_dot = line.startswith('+.')
-              has_dot = line.startswith('.')
-              has_star = line.startswith('*.')
+              # 排除所有 DOMAIN-KEYWORD、PROCESS-NAME 前缀
+              if line.startswith('DOMAIN-KEYWORD,') or line.startswith('PROCESS-NAME,'):
+                  return None
 
-              if line.startswith('DOMAIN,') or line.startswith('DOMAIN-SUFFIX,') or line.startswith('DOMAIN-KEYWORD,') or line.startswith('DOMAIN-REGEX,') or line.startswith('DOMAIN-FULL,') or line.startswith('PROCESS-NAME,'):
-                  line = line[7:].strip()
+              # 处理 DOMAIN 前缀（自动清除）
+              if line.startswith('DOMAIN,'):
+                  line = line[6:].strip()
 
-              if has_plus_dot:
-                  line = '+.' + line
-              elif has_dot:
-                  line = '+.' + line
-              elif has_star:
-                  line = '*.' + line
+              # 处理 DOMAIN-SUFFIX 前缀（自动替换为 +.)
+              if line.startswith('DOMAIN-SUFFIX,'):
+                  line = line[14:].strip()
+                  if line.startswith('+.'):
+                      return line
+                  elif line.startswith('.'):
+                      return '+.' + line
+                  elif line.startswith('*'):
+                      return '*' + line
+                  else:
+                      return '+.' + line
 
-              if line.startswith('+.') or line.startswith('.'):
-                  return line
-              elif is_ip_cidr(line):
+              # 处理 . 前缀（自动替换为 +.)
+              elif line.startswith('.'):
+                  line = '+.' + line[1:]
+
+              # 没有前缀符号及 ipcidr 规则直接保留
+              if line.startswith('+.') or line.startswith('*') or is_ip_cidr(line):
                   return line
               else:
                   return None
