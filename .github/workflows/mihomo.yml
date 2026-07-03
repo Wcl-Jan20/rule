@@ -16,135 +16,228 @@ jobs:
         uses: actions/checkout@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Install Mihomo
         shell: bash
         run: |
-          curl -L -o mihomo.deb https://github.com/MetaCubeX/mihomo/releases/download/v1.19.23/mihomo-linux-amd64-v1.19.23.deb
+          curl -L -o mihomo.deb https://github.com/MetaCubeX/mihomo/releases/download/v1.19.27/mihomo-linux-amd64-v1.19.27.deb
           mkdir -p temp_deb
           dpkg -x mihomo.deb temp_deb
           mv temp_deb/usr/bin/mihomo ./mihomo-bin
           chmod +x mihomo-bin
           rm -rf temp_deb mihomo.deb
+
+      - name: Install Dependencies
+        shell: bash
+        run: |
+          apt-get update -qq
+          apt-get install -y -qq python3 python3-yaml
+
       - name: Process Rules
         shell: bash
         run: |
           set -u
           mkdir -p mihomo
-          while IFS= read -r line || [[ -n "$line" ]]; do
-            [[ "$line" =~ ^[[:space:]]*#.*$ ]] && continue
-            [[ -z "${line//[[:space:]]/}" ]] && continue
-            URL=""
-            FILENAME=""
-            if [[ "$line" == *"@"* ]]; then
-              LAST_PART="${line##*@}"
-              if [[ "$LAST_PART" != */* ]]; then
-                URL="${line%@*}"
-                FILENAME="$LAST_PART"
-              else
-                URL="$line"
-                FILENAME="$(basename "$URL")"
-                FILENAME="${FILENAME%%\?*}"
-                FILENAME="${FILENAME%.*}"
-              fi
-            else
-              URL="$line"
-              FILENAME="$(basename "$URL")"
-              FILENAME="${FILENAME%%\?*}"
-              FILENAME="${FILENAME%.*}"
-            fi
-            FILENAME="$(echo "$FILENAME" | tr -cd '[:alnum:]_-')"
-            [[ -z "$FILENAME" ]] && FILENAME="rule_$(date +%s)"
-            TXT_FILE="mihomo/${FILENAME}.txt"
-            TMP_FILE="mihomo/${FILENAME}.tmp"
-            MRS_FILE="mihomo/${FILENAME}.mrs"
-            echo "Processing: $URL -> $FILENAME"
-            if ! curl -sL -f --max-time 30 "$URL" -o "$TXT_FILE"; then
-              echo "Error: Failed to download $URL"
-              continue
-            fi
-            if [[ ! -s "$TXT_FILE" ]]; then
-              echo "Error: Downloaded file is empty for $URL"
-              rm -f "$TXT_FILE"
-              continue
-            fi
-            if grep -qE "^[[:space:]]*(IP-CIDR|IP-CIDR6|IP-ASN|SRC-IP-CIDR)" "$TXT_FILE" || \
-               grep -qE "^[[:space:]]*-[[:space:]]+(IP-CIDR|IP-CIDR6|IP-ASN|SRC-IP-CIDR)" "$TXT_FILE" || \
-               grep -qE "^[[:space:]]*([0-9]{1,3}\.){3}[0-9]{1,3}/[0-9]{1,2}[[:space:]]*$" "$TXT_FILE" || \
-               grep -qE "^[[:space:]]*([0-9a-fA-F]{0,4}:){2,7}[0-9a-fA-F]{0,4}/[0-9]{1,3}[[:space:]]*$" "$TXT_FILE"; then
-              BEHAVIOR="ipcidr"
-              grep -vE "^[[:space:]]*(#|!|$|payload:|DOMAIN|GEOIP|PROCESS-NAME|SRC-PORT|DST-PORT|MATCH)" "$TXT_FILE" | \
-              sed -E 's/^[[:space:]]*-[[:space:]]+//' | \
-              sed -E 's/^\|\|//g' | \
-              sed -E 's/\^$//g' | \
-              sed -E 's/^[[:space:]]*(IP-CIDR|IP-CIDR6|IP-ASN|SRC-IP-CIDR)[[:space:]]*,?[[:space:]]*//' | \
-              sed -E "s/^['\"+]?//; s/['\"+]?$//" | \
-              cut -d',' -f1 | \
-              sed 's/[[:space:]]//g' | \
-              grep -E "^(([0-9]{1,3}\.){3}[0-9]{1,3}/[0-9]{1,2}|([0-9a-fA-F]{0,4}:){2,7}[0-9a-fA-F]{0,4}/[0-9]{1,3})$" | \
-              sort -u > "$TMP_FILE"
-            else
-              BEHAVIOR="domain"
-              grep -vE "^[[:space:]]*(IP-CIDR|IP-CIDR6|IP-ASN|SRC-IP-CIDR|#|!|$|payload:|GEOIP|PROCESS-NAME|SRC-PORT|DST-PORT|MATCH)" "$TXT_FILE" | \
-              sed -E 's/^[[:space:]]*-[[:space:]]+//' | \
-              sed -E 's/^\|\|//g' | \
-              sed -E 's/\^$//g' | \
-              sed -E "s/^['\"+]?//; s/['\"+]?$//" | \
-              awk -F',' '
-              {
-                gsub(/[[:space:]]/, "", $1)
-                gsub(/[[:space:]]/, "", $2)
-                type=toupper($1)
-                val=$2
-                if (type=="DOMAIN-SUFFIX" && val!="") {
-                  print val
-                  print "." val
-                  next
-                }
-                if ((type=="DOMAIN" || type=="FULL" || type=="FULL:" || type=="FULL") && val!="") {
-                  print val
-                  next
-                }
-                if (type=="DOMAIN-KEYWORD" || type=="DOMAIN-REGEX") next
-                if (tolower($1) ~ /^domain:/ && $2=="") {
-                  sub(/^domain:/, "", $1)
-                  print $1
-                  next
-                }
-                if ($2=="") {
-                  print $1
-                  next
-                }
-              }
-              ' | \
-              sed -E 's/^domain://g' | \
-              sed -E 's/^\.\.+/./g' | \
-              sed -E 's/^\*\.?/./g' | \
-              sed -E 's/_/*/g' | \
-              cut -d',' -f1 | \
-              sed 's/[[:space:]]//g' | \
-              grep -vE "^(no-resolve|force-remote-dns|keyword:|regexp:|\*|.*\*.*\*)$" | \
-              grep -v '^$' | \
-              sort -u > "$TMP_FILE"
-            fi
-            if [[ -s "$TMP_FILE" ]] && grep -q "[^[:space:]]" "$TMP_FILE"; then
-              ORIGINAL_COUNT="$(wc -l < "$TMP_FILE")"
-              if ./mihomo-bin convert-ruleset "$BEHAVIOR" text "$TMP_FILE" "$MRS_FILE"; then
-                MRS_SIZE="$(stat -c%s "$MRS_FILE" 2>/dev/null || echo "0")"
-                echo "✓ Success: $FILENAME ($BEHAVIOR) - $ORIGINAL_COUNT rules -> ${MRS_SIZE} bytes"
-              else
-                echo "✗ Error: Failed to convert $FILENAME"
-                rm -f "$TXT_FILE" "$MRS_FILE"
-              fi
-            else
-              echo "⚠ Warning: No valid rules found in $FILENAME"
-              rm -f "$TXT_FILE" "$MRS_FILE"
-            fi
-            rm -f "$TMP_FILE"
-          done < rule.txt
+          
+          python3 << 'PYTHON_EOF'
+          import os
+          import sys
+          import yaml
+          import re
+          import subprocess
+          from urllib.request import urlopen
+          from urllib.error import URLError
+          
+          def download_file(url, timeout=30):
+              """下载文件内容"""
+              try:
+                  with urlopen(url, timeout=timeout) as response:
+                      return response.read().decode('utf-8', errors='ignore')
+              except URLError as e:
+                  print(f"Error: Failed to download {url}: {e}")
+                  return None
+          
+          def extract_filename(url, custom_name=None):
+              """提取文件名"""
+              if custom_name:
+                  return re.sub(r'[^a-zA-Z0-9_-]', '', custom_name)
+              
+              filename = os.path.basename(url)
+              filename = re.sub(r'\?.*$', '', filename)
+              filename = os.path.splitext(filename)[0]
+              filename = re.sub(r'[^a-zA-Z0-9_-]', '', filename)
+              
+              return filename if filename else f"rule_{int(__import__('time').time())}"
+          
+          def is_ip_cidr_rule(line):
+              """检测是否为 IP CIDR 规则"""
+              line = line.strip()
+              
+              patterns = [
+                  r'^IP-CIDR6?\s*,',
+                  r'^IP-ASN\s*,',
+                  r'^SRC-IP-CIDR\s*,',
+                  r'^([0-9]{1,3}\.){3}[0-9]{1,3}/[0-9]{1,2}$',
+                  r'^([0-9a-fA-F]{0,4}:){2,7}[0-9a-fA-F]{0,4}/[0-9]{1,3}$',
+              ]
+              
+              return any(re.match(p, line) for p in patterns)
+          
+          def parse_yaml_rules(content):
+              """解析 YAML 格式的规则"""
+              try:
+                  data = yaml.safe_load(content)
+                  if isinstance(data, dict):
+                      return data.get('payload', [])
+                  elif isinstance(data, list):
+                      return data
+                  return []
+              except:
+                  return []
+          
+          def normalize_domain(domain):
+              """规范化域名"""
+              domain = domain.strip()
+              
+              domain = re.sub(r'^[\+\.]+', '', domain)
+              domain = domain.lstrip('.')
+              domain = re.sub(r'^\|\|', '', domain)
+              domain = re.sub(r'\^$', '', domain)
+              domain = re.sub(r"^['\"+]|['\"+]$", '', domain)
+              
+              if not domain or domain == '*':
+                  return None
+              
+              return domain
+          
+          def process_ip_rules(content):
+              """处理 IP CIDR 规则"""
+              rules = set()
+              
+              for line in content.split('\n'):
+                  line = line.strip()
+                  if not line or line.startswith('#'):
+                      continue
+                  
+                  line = re.sub(r'^(IP-CIDR6?|IP-ASN|SRC-IP-CIDR)\s*,\s*', '', line)
+                  line = re.sub(r"^['\"+]|['\"+]$", '', line)
+                  line = line.split(',')[0].strip()
+                  
+                  if re.match(r'^([0-9]{1,3}\.){3}[0-9]{1,3}/[0-9]{1,2}$|^([0-9a-fA-F]{0,4}:){2,7}[0-9a-fA-F]{0,4}/[0-9]{1,3}$', line):
+                      rules.add(line)
+              
+              return sorted(rules)
+          
+          def process_domain_rules(content):
+              """处理域名规则"""
+              rules = set()
+              yaml_rules = parse_yaml_rules(content)
+              
+              if yaml_rules:
+                  for item in yaml_rules:
+                      normalized = normalize_domain(str(item))
+                      if normalized:
+                          rules.add(normalized)
+              
+              for line in content.split('\n'):
+                  line = line.strip()
+                  if not line or line.startswith('#'):
+                      continue
+                  
+                  line = re.sub(r'^(DOMAIN|FULL|DOMAIN-SUFFIX|DOMAIN-KEYWORD|DOMAIN-REGEX)\s*:?\s*,?\s*', '', line, flags=re.IGNORECASE)
+                  
+                  if ',' in line:
+                      parts = line.split(',')
+                      line = parts[1].strip() if len(parts) > 1 else parts[0].strip()
+                  
+                  normalized = normalize_domain(line)
+                  if normalized and 'keyword' not in normalized and 'regexp' not in normalized:
+                      rules.add(normalized)
+              
+              return sorted(rules)
+          
+          with open('rule.txt', 'r') as f:
+              urls = [line.strip() for line in f if line.strip() and not line.strip().startswith('#')]
+          
+          print("=" * 60)
+          print("Mihomo 规则转换工具")
+          print("=" * 60)
+          
+          success_count = 0
+          error_count = 0
+          
+          for idx, line in enumerate(urls, 1):
+              url = line
+              filename = None
+              
+              if '@' in line:
+                  parts = line.rsplit('@', 1)
+                  url = parts[0].strip()
+                  custom_part = parts[1].strip()
+                  if '/' not in custom_part:
+                      filename = custom_part
+              
+              filename = extract_filename(url, filename)
+              
+              print(f"\n[{idx}/{len(urls)}] 处理: {filename}")
+              print(f"    URL: {url}")
+              
+              content = download_file(url)
+              if not content:
+                  error_count += 1
+                  continue
+              
+              if not content.strip():
+                  print(f"    ⚠ Warning: 文件为空")
+                  error_count += 1
+                  continue
+              
+              is_ip_rule = any(is_ip_cidr_rule(line) for line in content.split('\n')[:100])
+              
+              if is_ip_rule:
+                  behavior = "ipcidr"
+                  rules = process_ip_rules(content)
+              else:
+                  behavior = "domain"
+                  rules = process_domain_rules(content)
+              
+              if not rules:
+                  print(f"    ⚠ Warning: 未找到有效规则")
+                  error_count += 1
+                  continue
+              
+              txt_file = f"mihomo/{filename}.txt"
+              mrs_file = f"mihomo/{filename}.mrs"
+              
+              with open(txt_file, 'w') as f:
+                  f.write('\n'.join(rules))
+              
+              print(f"    ✓ 提取规则: {len(rules)} 条")
+              
+              result = subprocess.run(
+                  ['./mihomo-bin', 'convert-ruleset', behavior, 'text', txt_file, mrs_file],
+                  capture_output=True,
+                  text=True
+              )
+              
+              if result.returncode == 0:
+                  mrs_size = os.path.getsize(mrs_file)
+                  print(f"    ✓ 编译成功: {mrs_size} bytes")
+                  success_count += 1
+              else:
+                  print(f"    ✗ 编译失败: {result.stderr}")
+                  os.remove(txt_file)
+                  error_count += 1
+          
+          print("\n" + "=" * 60)
+          print(f"转换完成: {success_count} 成功, {error_count} 失败")
+          print("=" * 60)
+          PYTHON_EOF
+
       - name: Verify Rules
         shell: bash
         run: |
-          echo "=== Conversion Summary ==="
+          echo "=== 规则统计 ==="
           echo ""
           TOTAL_FILES=0
           TOTAL_SIZE=0
@@ -152,12 +245,15 @@ jobs:
             [ -f "$mrs" ] || continue
             BASENAME=$(basename "$mrs" .mrs)
             MRS_SIZE=$(stat -c%s "$mrs" 2>/dev/null || echo "0")
-            echo "  $BASENAME.mrs -> ${MRS_SIZE} bytes"
+            TXT_SIZE=$(stat -c%s "mihomo/${BASENAME}.txt" 2>/dev/null || echo "0")
+            TXT_LINES=$(wc -l < "mihomo/${BASENAME}.txt" 2>/dev/null || echo "0")
+            printf "  %-30s %6d rules → %8s bytes\n" "$BASENAME:" "$TXT_LINES" "$MRS_SIZE"
             TOTAL_FILES=$((TOTAL_FILES + 1))
             TOTAL_SIZE=$((TOTAL_SIZE + MRS_SIZE))
           done
           echo ""
-          echo "Total: $TOTAL_FILES files, $TOTAL_SIZE bytes"
+          printf "总计: %d 文件, %d 字节\n" "$TOTAL_FILES" "$TOTAL_SIZE"
+
       - name: Push to Repo
         shell: bash
         run: |
@@ -168,7 +264,7 @@ jobs:
             echo "No changes to commit"
             exit 0
           else
-            git commit -m "Update rules: $(date '+%Y-%m-%d %H:%M:%S')"
-            git pull --rebase origin main
+            git commit -m "Update mihomo rules: $(date '+%Y-%m-%d %H:%M:%S')"
+            git pull --rebase origin main || true
             git push
           fi
