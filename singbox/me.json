@@ -4,7 +4,9 @@
       "domain": [
         "cdn.jsdelivr.net",
         "cdnjs.cloudflare.com",
+        "cnvod.cachefly.net",
         "fastly.jsdelivr.net",
+        "slb.jimxtc.com",
         "testingcf.jsdelivr.net"
       ]
     },
