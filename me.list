@@ -1,7 +1,7 @@
 # Web
-DOMAIN,cdn.jsdelivr.net
-DOMAIN,fastly.jsdelivr.net
-DOMAIN,testingcf.jsdelivr.net
+DOMAIN-SUFFIX,cloudflare.com
+DOMAIN-SUFFIX,cloudfront.com
+DOMAIN-SUFFIX,jsdelivr.net
 DOMAIN-SUFFIX,ghfast.top
 DOMAIN-SUFFIX,gh-proxy.org
 DOMAIN-SUFFIX,gh-proxy.com
@@ -95,8 +95,6 @@ DOMAIN-SUFFIX,cftest5.cn
 DOMAIN-SUFFIX,cftest6.cn
 DOMAIN-SUFFIX,cftest7.com
 DOMAIN-SUFFIX,cftest8.com
-DOMAIN-SUFFIX,cloudflare.com
-DOMAIN-SUFFIX,cloudfront.com
 DOMAIN-SUFFIX,cloudflare-cn.com
 DOMAIN-SUFFIX,cloudflareanycast.net
 DOMAIN-SUFFIX,cloudflarechina.cn
