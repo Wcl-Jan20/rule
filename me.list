@@ -51,8 +51,6 @@ DOMAIN-SUFFIX,xb6v.com
 DOMAIN-SUFFIX,xsayang.fun
 DOMAIN-SUFFIX,bigwawk.cc
 # 追剧猫
-DOMAIN,slb.jimxtc.com
-DOMAIN,cnvod.cachefly.net
 DOMAIN-SUFFIX,feiwang.cc
 DOMAIN-SUFFIX,67c6c7a.com
 DOMAIN-SUFFIX,ffzy888.com
@@ -76,6 +74,10 @@ DOMAIN-SUFFIX,ryzypics.com
 DOMAIN-SUFFIX,iqiyizyimg.com
 DOMAIN-SUFFIX,wupgapy.cc
 DOMAIN-SUFFIX,hbmysy.com
+DOMAIN-SUFFIX,jimxtc.com
+DOMAIN-SUFFIX,cachefly.net
+DOMAIN-SUFFIX,jimxtc.com
+DOMAIN,d2v6mcbvwekvav.cloudfront.net
 # emby
 DOMAIN-SUFFIX,28.al
 DOMAIN-SUFFIX,shrekmedia.org
