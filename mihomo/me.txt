@@ -31,6 +31,7 @@
 +.cloudflareprod.com
 +.cloudflarestaging.com
 +.cloudflarestoragegw.com
++.cloudfront.com
 +.dytt-cinema.com
 +.dytt-film.com
 +.dytt-img.com
@@ -58,6 +59,7 @@
 +.iqiyizyimg.com
 +.istatmenus.app
 +.jimxtc.com
++.jsdelivr.net
 +.libvio.mov
 +.ln632.com
 +.macked.app
@@ -98,7 +100,3 @@
 +.xy4k.com
 +.ymck.pro
 +.yylx.win
-cdn.jsdelivr.net
-d2v6mcbvwekvav.cloudfront.net
-fastly.jsdelivr.net
-testingcf.jsdelivr.net
