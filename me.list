@@ -76,7 +76,6 @@ DOMAIN-SUFFIX,wupgapy.cc
 DOMAIN-SUFFIX,hbmysy.com
 DOMAIN-SUFFIX,jimxtc.com
 DOMAIN-SUFFIX,cachefly.net
-DOMAIN,d2v6mcbvwekvav.cloudfront.net
 # emby
 DOMAIN-SUFFIX,28.al
 DOMAIN-SUFFIX,shrekmedia.org
@@ -97,6 +96,7 @@ DOMAIN-SUFFIX,cftest6.cn
 DOMAIN-SUFFIX,cftest7.com
 DOMAIN-SUFFIX,cftest8.com
 DOMAIN-SUFFIX,cloudflare.com
+DOMAIN-SUFFIX,cloudfront.com
 DOMAIN-SUFFIX,cloudflare-cn.com
 DOMAIN-SUFFIX,cloudflareanycast.net
 DOMAIN-SUFFIX,cloudflarechina.cn
