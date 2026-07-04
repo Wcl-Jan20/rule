@@ -661,4 +661,8 @@
 +.xbx.lv
 +.yammer.com
 +.yammerusercontent.com
+1drv
+microsoft
+onedrive
+skydrive
 vsmarketplacebadge.apphb.com
