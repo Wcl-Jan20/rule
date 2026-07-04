@@ -30,6 +30,7 @@ jobs:
       - name: Process Rules
         shell: bash
         run: |
+          rm -rf mihomo/*
           mkdir -p mihomo
           
           python3 << 'PYTHON_EOF'
@@ -227,7 +228,12 @@ jobs:
             [ -f "$mrs" ] || continue
             BASENAME=$(basename "$mrs" .mrs)
             MRS_SIZE=$(stat -c%s "$mrs" 2>/dev/null || echo "0")
-            TXT_LINES=$(wc -l < "mihomo/${BASENAME}.txt" 2>/dev/null || echo "0")
+            
+            if [ -f "mihomo/${BASENAME}.txt" ]; then
+              TXT_LINES=$(wc -l < "mihomo/${BASENAME}.txt")
+            else
+              TXT_LINES=0
+            fi
             
             printf "  %-30s %8d 规则 → %10s bytes\n" "$BASENAME" "$TXT_LINES" "$MRS_SIZE"
             
@@ -245,9 +251,11 @@ jobs:
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
+          
+          git rm -r --cached mihomo/ 2>/dev/null || true
           git add mihomo/*.mrs mihomo/*.txt 2>/dev/null || true
           
-          if git diff --staged --quiet; then
+          if git diff --cached --quiet; then
             echo "No changes to commit"
           else
             git commit -m "Update mihomo rules: $(date '+%Y-%m-%d %H:%M:%S')"
