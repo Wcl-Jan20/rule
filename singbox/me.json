@@ -4,9 +4,8 @@
       "domain": [
         "cdn.jsdelivr.net",
         "cdnjs.cloudflare.com",
-        "cnvod.cachefly.net",
+        "d2v6mcbvwekvav.cloudfront.net",
         "fastly.jsdelivr.net",
-        "slb.jimxtc.com",
         "testingcf.jsdelivr.net"
       ]
     },
@@ -24,6 +23,7 @@
         "bigwawk.cc",
         "bq0.net",
         "bttwo.org",
+        "cachefly.net",
         "cf-china.info",
         "cf-ns.com",
         "cf-ns.net",
@@ -69,6 +69,7 @@
         "hkybqufgh.com",
         "iqiyizyimg.com",
         "istatmenus.app",
+        "jimxtc.com",
         "libvio.mov",
         "ln632.com",
         "macked.app",
