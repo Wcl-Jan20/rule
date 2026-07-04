@@ -21,6 +21,7 @@
 +.cftest7.com
 +.cftest8.com
 +.cloudflare-cn.com
++.cloudflare.com
 +.cloudflareanycast.net
 +.cloudflarechina.cn
 +.cloudflarecn.net
@@ -98,7 +99,6 @@
 +.ymck.pro
 +.yylx.win
 cdn.jsdelivr.net
-cdnjs.cloudflare.com
 d2v6mcbvwekvav.cloudfront.net
 fastly.jsdelivr.net
 testingcf.jsdelivr.net
