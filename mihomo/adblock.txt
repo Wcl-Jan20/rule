@@ -568,6 +568,7 @@
 +.advertise.cloudlinks.cn
 +.advertise.ldplayer.net
 +.advertpay-vip-ssl.xunlei.com
++.advertpay.vip.xunlei.com
 +.adview.cn
 +.adview.com
 +.advlion.com
@@ -638,6 +639,7 @@
 +.ali2.a.yximgs.com
 +.alimama.alicdn.com
 +.alime-pic.oss-cn-hangzhou.aliyuncs.com
++.alimelog.taobao.com
 +.alipaylog.com
 +.alitui.weibo.com
 +.all.cnzz.com.danuoyi.tbcache.com
@@ -692,6 +694,7 @@
 +.analytics.sixt.cn
 +.analytics.sve.cc
 +.analytics.umetrip.com
++.analytics.umetrip.com.c.vedcdnlb.com
 +.analytics.wanmei.com
 +.analytics.wiwide.com
 +.analytics.wondershare.cc
@@ -1019,6 +1022,7 @@
 +.bdwmhz.120askimages.com
 +.bdx.playnext.cn
 +.bea-s.dinghuoche.com
++.beacon-ad.ztgame.com.ztinfoga.com
 +.beacon-api.aliyuncs.com
 +.beacon-api.aliyuncs.com.gds.alibabadns.com
 +.beacon.cdn.qq.com
@@ -1176,6 +1180,7 @@
 +.cgicol.amap.com
 +.cgigc.com.cn
 +.chance-ad.com
++.chanced112.com
 +.chanet.com.cn
 +.changyan.sohu.com
 +.changyi21.cn
@@ -1601,6 +1606,7 @@
 +.dytuj6zs26.com
 +.dz6xqe19d2.com
 +.e-goblin.hupu.com
++.e-p4p.163.com
 +.e-stat.huya.com
 +.e.baidu.com
 +.e.kuaishou.cn
@@ -2364,6 +2370,7 @@
 +.ixav-cse.avlyun.com
 +.ixelrsd.cn
 +.ixjtpbj.cn
++.iy.com.cn
 +.j.baminw.cn
 +.j2c03hoppk-default-cn.rum.aliyuncs.com
 +.jab88.com
@@ -2511,6 +2518,7 @@
 +.ky595images.com
 +.kychq.cn
 +.kz-onrt-stsdk.vivoglobal.com
++.kz-ort-stsdk.vivoglobal.com
 +.kz-vcode-od.vivoglobal.com
 +.kzchyhr.cn
 +.kzki21j8f6.com
@@ -2839,6 +2847,7 @@
 +.metaword.cn
 +.metok.sys.miui.com
 +.metric.huya.com
++.metric.nuonuo.com
 +.metrics-dra.dt.dbankcloud.cn
 +.metrics-dra.dt.dbankcloud.com
 +.metrics-drcn.dt.dbankcloud.cn
@@ -3187,6 +3196,7 @@
 +.otme.cn
 +.ott-v0-al.data.mgtv.com
 +.ott.v1.data.mgtv.com
++.ottl7-l2.pandora.xiaomi.com
 +.oumax.oupeng.com
 +.ouyaoxiazai.com
 +.overlay.top
@@ -3496,6 +3506,7 @@
 +.report-europe.agora.io
 +.report-north-america.agora.io
 +.report-oversea.agora.io
++.report-oversea2.agora.io
 +.report.cdnpure.com
 +.report.gamecenter.qq.com
 +.report.iciba.com
@@ -3577,6 +3588,7 @@
 +.ru-onrt-stsdk.vivoglobal.com
 +.ru-os-config-appstore.vivoglobal.com
 +.ru-p.vivoglobal.com
++.ru-pnrt-stsdk.vivoglobal.com
 +.ru-romsp-unifyconfig.vivoglobal.com
 +.ru-st-exappupgrade.vivoglobal.com
 +.ru-st-sl.vivoglobal.com
@@ -4166,6 +4178,7 @@
 +.tr.email.directindustry.com
 +.tr.email.medicalexpo.com
 +.tr.email.nauticexpo.com
++.tr.email.virtual-expo.com
 +.tr.jianshu.com
 +.trace-v1.free-reels.com
 +.trace.51jingying.com
@@ -4417,9 +4430,11 @@
 +.v3-ad.video.yximgs.com
 +.v3-reading-ad.qznovelvod.com
 +.v3-reading-ad.qznovelvod.com.230b2a2545cfa773.queniubg.com
++.v5-bd-daily-reading-ad.qznovelvod.com
 +.v5-ex-reading-ad.qznovelvod.com
 +.v5-reading-ad.qznovelvod.com
 +.v5-se-gddgtc-reading-ad.qznovelvod.com
++.v5-se-sjy-daily-reading-ad.qznovelvod.com
 +.v6-daily-reading-ad.qznovelvod.com
 +.v6-reading-ad.qznovelvod.com
 +.v84tz11w7.com
@@ -4472,6 +4487,7 @@
 +.vrbrothers.com
 +.vrr.name
 +.vrrm.cn
++.vs.funshion.com
 +.vstat.borderlessbd.com
 +.vstat.v.blog.sohu.com
 +.vungle.cn
@@ -4500,6 +4516,8 @@
 +.wan.sogou.com
 +.wan.youku.com
 +.wangmeng.baidu.com
++.wangsu-smetrics.redhat.com.edgekey.net
++.wangsu-smetrics.redhat.com.edgekey.net.wanakadns.net
 +.wanproxy.127.net
 +.wap.koudaitong.com
 +.watchworks.shop
@@ -4682,6 +4700,7 @@
 +.xryrylt.cn
 +.xs.dmzj.com
 +.xssncc2tv.com
++.xttaff.com
 +.xue.zbyw.cn
 +.xueaaaw.cn
 +.xulizui6.com
