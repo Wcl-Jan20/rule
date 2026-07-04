@@ -6,6 +6,9 @@ on:
   schedule:
     - cron: '0 20 * * *'
 
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -29,15 +32,13 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install pandas requests pyyaml
+          pip install requests pyyaml
 
       - name: Run Python script
-        working-directory: ./singbox/
         run: |
+          mkdir -p ./singbox
+          
           python3 << 'EOF'
-          import pandas as pd
-          import re
-          import concurrent.futures
           import os
           import json
           import subprocess
@@ -80,13 +81,6 @@ jobs:
               'source_port'
           ]
 
-          def read_yaml_from_url(url):
-              headers = {'User-Agent': 'Mozilla/5.0'}
-              response = requests.get(url, headers=headers, timeout=10)
-              response.raise_for_status()
-              yaml_data = yaml.safe_load(response.text)
-              return yaml_data
-
           def is_valid_ip_cidr(s):
               s = s.strip()
               if not s or s.startswith('#'):
@@ -98,110 +92,90 @@ jobs:
                   return False
 
           def normalize_address(address):
+              if not address:
+                  return None
               address = address.strip()
               while address.startswith('+') or address.startswith('.'):
                   address = address[1:]
               return address if address else None
 
-          def read_list_from_url(url):
-              headers = {'User-Agent': 'Mozilla/5.0'}
-              try:
-                  response = requests.get(url, headers=headers, timeout=10)
-                  if response.status_code != 200:
-                      return None, []
-              except Exception as e:
-                  print(f"[WARNING] 无法读取 {url}: {str(e)}")
-                  return None, []
+          def parse_line(line):
+              line = line.strip()
+              if not line or line.startswith(('#', '//', 'payload:')):
+                  return None, None
               
-              lines = response.text.strip().split('\n')
-              rows = []
+              if line.startswith('-'):
+                  line = line[1:].strip()
               
-              for line in lines:
-                  line = line.strip()
-                  if not line or line.startswith('#'):
-                      continue
-                  
-                  if ',' in line:
-                      parts = [p.strip() for p in line.split(',')]
-                      rows.append({
-                          'pattern': parts[0] if len(parts) > 0 else '',
-                          'address': parts[1] if len(parts) > 1 else '',
-                          'other': parts[2] if len(parts) > 2 else None,
-                          'other2': parts[3] if len(parts) > 3 else None,
-                          'other3': parts[4] if len(parts) > 4 else None
-                      })
-                  else:
-                      if is_valid_ip_cidr(line):
-                          pattern = 'IP-CIDR'
-                          address = line
-                      elif line.startswith('+.') or line.startswith('.'):
-                          pattern = 'DOMAIN-SUFFIX'
-                          address = normalize_address(line)
-                      else:
-                          pattern = 'DOMAIN'
-                          address = line
-                      
-                      if address:
-                          rows.append({
-                              'pattern': pattern,
-                              'address': address,
-                              'other': None,
-                              'other2': None,
-                              'other3': None
-                          })
+              if ' #' in line:
+                  line = line.split(' #', 1)[0].strip()
+              elif ' //' in line:
+                  line = line.split(' //', 1)[0].strip()
               
-              df = pd.DataFrame(rows, columns=['pattern', 'address', 'other', 'other2', 'other3']) if rows else None
-              return df, []
-
-          def parse_and_convert_to_dataframe(link):
-              rules = []
-              df = None
+              line = line.strip("'\"")
               
-              if link.endswith('.yaml') or link.endswith('.yml'):
-                  try:
-                      yaml_data = read_yaml_from_url(link)
-                      rows = []
-                      
-                      if isinstance(yaml_data, dict):
-                          items = yaml_data.get('payload', [])
-                      elif isinstance(yaml_data, list):
-                          items = yaml_data
-                      else:
-                          items = []
-                      
-                      for item in items:
-                          address = str(item).strip("'\"")
-                          
-                          if ',' not in str(item):
-                              if is_valid_ip_cidr(str(item)):
-                                  pattern = 'IP-CIDR'
-                              else:
-                                  if address.startswith('+.') or address.startswith('.'):
-                                      pattern = 'DOMAIN-SUFFIX'
-                                      address = normalize_address(address)
-                                  else:
-                                      pattern = 'DOMAIN'
-                          else:
-                              parts = str(item).split(',', 1)
-                              pattern = parts[0].strip()
-                              address = parts[1].strip() if len(parts) > 1 else ''
-                          
-                          if address:
-                              rows.append({
-                                  'pattern': pattern.strip(),
-                                  'address': address.strip(),
-                                  'other': None
-                              })
-                      
-                      if rows:
-                          df = pd.DataFrame(rows, columns=['pattern', 'address', 'other'])
-                  except Exception as e:
-                      print(f"[WARNING] YAML 解析失败: {str(e)}, 使用纯文本解析")
-                      df, rules = read_list_from_url(link)
+              if ',' in line:
+                  parts = [p.strip() for p in line.split(',')]
+                  pattern = parts[0]
+                  address = parts[1] if len(parts) > 1 else ''
               else:
-                  df, rules = read_list_from_url(link)
+                  if is_valid_ip_cidr(line):
+                      pattern = 'IP-CIDR'
+                      address = line
+                  elif line.startswith('+.') or line.startswith('.'):
+                      pattern = 'DOMAIN-SUFFIX'
+                      address = normalize_address(line)
+                  else:
+                      pattern = 'DOMAIN'
+                      address = line
+                      
+              address = normalize_address(address)
+              if not address:
+                  return None, None
+              return pattern, address
+
+          def parse_and_convert_to_rules(link):
+              rules_dict = defaultdict(set)
+              try:
+                  headers = {'User-Agent': 'Mozilla/5.0'}
+                  response = requests.get(link, headers=headers, timeout=15)
+                  response.raise_for_status()
+                  content = response.text
+              except Exception as e:
+                  print(f"[WARNING] 无法读取 {link}: {str(e)}")
+                  return None
+
+              is_yaml = link.endswith('.yaml') or link.endswith('.yml')
+              parsed = False
               
-              return df, rules
+              if is_yaml:
+                  try:
+                      yaml_data = yaml.safe_load(content)
+                      if yaml_data:
+                          items = []
+                          if isinstance(yaml_data, dict):
+                              items = yaml_data.get('payload', [])
+                          elif isinstance(yaml_data, list):
+                              items = yaml_data
+                          
+                          for item in items:
+                              pattern, address = parse_line(str(item))
+                              if pattern in MAP_DICT:
+                                  mapped = MAP_DICT[pattern]
+                                  rules_dict[mapped].add(address)
+                          parsed = True
+                  except Exception as e:
+                      print(f"[WARNING] YAML 解析失败: {str(e)}, 尝试纯文本解析")
+                      parsed = False
+
+              if not parsed:
+                  for line in content.splitlines():
+                      pattern, address = parse_line(line)
+                      if pattern in MAP_DICT:
+                          mapped = MAP_DICT[pattern]
+                          rules_dict[mapped].add(address)
+
+              return rules_dict
 
           def sort_dict(obj):
               if isinstance(obj, dict):
@@ -213,39 +187,17 @@ jobs:
               else:
                   return obj
 
-          def build_result_rules(df, rules_list):
+          def build_result_rules(rules_dict):
               result_rules = {
                   "version": 5,
                   "rules": []
               }
-              
-              if rules_list:
-                  for rules in rules_list:
-                      if rules:
-                          result_rules["rules"].extend(rules)
-              
-              if df is not None and not df.empty:
-                  pattern_groups = defaultdict(list)
-                  
-                  for _, row in df.iterrows():
-                      pattern = row['pattern']
-                      address = row['address']
-                      
-                      if pd.isna(address) or not str(address).strip():
-                          continue
-                      
-                      if pattern in MAP_DICT:
-                          mapped_pattern = MAP_DICT[pattern]
-                          pattern_groups[mapped_pattern].append(str(address).strip())
-                  
-                  for rule_type in RULE_ORDER:
-                      if rule_type in pattern_groups:
-                          unique_addresses = list(set(pattern_groups[rule_type]))
-                          unique_addresses.sort()
-                          result_rules["rules"].append({
-                              rule_type: unique_addresses
-                          })
-              
+              for rule_type in RULE_ORDER:
+                  if rule_type in rules_dict and rules_dict[rule_type]:
+                      unique_addresses = sorted(list(rules_dict[rule_type]))
+                      result_rules["rules"].append({
+                          rule_type: unique_addresses
+                      })
               return result_rules
 
           def parse_list_file(link, output_directory):
@@ -261,22 +213,12 @@ jobs:
                   
                   print(f"[处理] 开始处理: {base_filename}")
                   
-                  with concurrent.futures.ThreadPoolExecutor(max_workers=3) as executor:
-                      results = list(executor.map(parse_and_convert_to_dataframe, [url]))
-                      dfs = [df for df, rules in results if df is not None]
-                      rules_list = [rules for df, rules in results]
-                      
-                      if not dfs:
-                          print(f"[警告] {base_filename}: 没有有效数据")
-                          return None
-                      
-                      df = pd.concat(dfs, ignore_index=True)
-                      df = df[~df['pattern'].astype(str).str.contains('#', na=False)].reset_index(drop=True)
-                      df = df[df['pattern'].isin(MAP_DICT.keys())].reset_index(drop=True)
-                      df = df.drop_duplicates().reset_index(drop=True)
+                  rules_dict = parse_and_convert_to_rules(url)
+                  if not rules_dict:
+                      print(f"[警告] {base_filename}: 没有有效数据")
+                      return None
                   
-                  result_rules = build_result_rules(df, rules_list)
-                  
+                  result_rules = build_result_rules(rules_dict)
                   os.makedirs(output_directory, exist_ok=True)
                   
                   file_name = os.path.join(output_directory, f"{base_filename}.json")
@@ -296,7 +238,7 @@ jobs:
                       ["sing-box", "rule-set", "compile", "--output", srs_path, file_name],
                       capture_output=True,
                       text=True,
-                      timeout=30
+                      timeout=60
                   )
                   
                   if result.returncode != 0:
@@ -304,16 +246,13 @@ jobs:
                   else:
                       print(f"[✓] SRS 编译成功: {srs_path}")
                   
-                  total_rules = sum(len(v) for rule in result_rules['rules'] for v in rule.values() if isinstance(v, list))
-                  print(f"[统计] {base_filename}: 总规则数 = {total_rules}, 规则类型 = {len(result_rules['rules'])}")
+                  total_rules = sum(len(v) for rule in result_rules['rules'] for v in rule.values())
+                  print(f"[统计] {base_filename}: 总规则数 = {total_rules}")
                   
                   return file_name
               
               except Exception as e:
-                  print(f"[✗] 处理失败: {link}")
-                  print(f"    原因: {str(e)}")
-                  import traceback
-                  traceback.print_exc()
+                  print(f"[✗] 处理失败: {link} 原因: {str(e)}")
                   return None
 
           print("=" * 60)
@@ -321,7 +260,7 @@ jobs:
           print("=" * 60)
 
           try:
-              with open("../rule.txt", 'r', encoding='utf-8') as links_file:
+              with open("./rule.txt", 'r', encoding='utf-8') as links_file:
                   links = links_file.read().splitlines()
           except FileNotFoundError:
               print("[✗] 错误: 未找到 rule.txt 文件")
@@ -335,7 +274,7 @@ jobs:
 
           print(f"[信息] 检测到 {len(links)} 个规则链接\n")
 
-          output_dir = "./"
+          output_dir = "./singbox"
           result_file_names = []
 
           for idx, link in enumerate(links, 1):
@@ -347,18 +286,17 @@ jobs:
           print("\n" + "=" * 60)
           print(f"处理完成! 成功生成 {len(result_file_names)} 个规则文件")
           print("=" * 60)
-
           EOF
 
       - name: Commit and push rules
         run: |
-          git config --global user.email "action@github.com"
-          git config --global user.name "GitHub Action"
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          
           git add ./singbox/*.json
           git add ./singbox/*.srs
           if git diff --staged --quiet; then
             echo "No changes to commit"
-            exit 0
           else
             git commit -m "chore: update sing-box rules $(date +%Y-%m-%d)"
             git pull --rebase origin main || true
