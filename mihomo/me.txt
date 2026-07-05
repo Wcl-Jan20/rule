@@ -21,7 +21,6 @@
 +.cftest7.com
 +.cftest8.com
 +.cloudflare-cn.com
-+.cloudflare.com
 +.cloudflareanycast.net
 +.cloudflarechina.cn
 +.cloudflarecn.net
@@ -104,3 +103,4 @@
 +.xy4k.com
 +.ymck.pro
 +.yylx.win
+cdnjs.cloudflare.com
