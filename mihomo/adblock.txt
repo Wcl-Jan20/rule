@@ -246,7 +246,6 @@
 +.abcd.5lu.com
 +.abcd.zle.com
 +.ablink.em.redmart.com
-+.abodevra.com
 +.abody.39.net
 +.abroad-ad.kingsoft-office-service.com
 +.abroad.api.comm.intl.miui.com
@@ -1780,7 +1779,6 @@
 +.fenxi.com
 +.fexclick.baidu.com
 +.fight-pl.shop
-+.fighter-pl.shop
 +.fighterspors.shop
 +.fightersports.shop
 +.fighterzz.shop
@@ -1803,7 +1801,6 @@
 +.flyye.cn
 +.fm.duokanbox.com
 +.focus-pl.shop
-+.focusbatz.shop
 +.focusgarden-dom.shop
 +.focusgarden.cfd
 +.focusgardenes.shop
@@ -1818,7 +1815,6 @@
 +.focusgardm.shop
 +.focusgardom.shop
 +.focussklep.shop
-+.focustaze.shop
 +.fodder.qq.com
 +.foisonad.com
 +.forestseasons.com.cn
@@ -2024,7 +2020,6 @@
 +.gym-glamours.shop
 +.gym-glamoursklep.club
 +.gym-glamourspl.club
-+.gym-sport.club
 +.gymyoga.club
 +.gymyogapl.shop
 +.gyqpyr.utsource.net
@@ -2410,7 +2405,6 @@
 +.jing.58.com
 +.jintengli.mobi
 +.jknrwe.cn
-+.jlwz.cn
 +.jmacs-m.lazada.co.id
 +.jmacs-m.lazada.co.th
 +.jmacs-m.lazada.com.my
@@ -3171,7 +3165,6 @@
 +.onelnk.com
 +.oneway.mobi
 +.onezapp.com
-+.online-pl.shop
 +.online.hnoexpo.com
 +.online.sh.cn
 +.onrt-stsdk.vivo.com.cn
@@ -3341,7 +3334,6 @@
 +.pitbullwestcoast.shop
 +.pl-stalco.shop
 +.pl.cp31.ott.cibntv.net
-+.pl.taniej-pl.shop
 +.pl53l7tyw.com
 +.placidocn.com
 +.platform.wondershare.com
@@ -3366,14 +3358,11 @@
 +.policy.jd.com
 +.policy.video.iqiyi.com
 +.policy.video.ptqy.gitv.tv
-+.polskagoldal.com
 +.polyfill-js.cn
 +.poqwua.cn
 +.poro.58.com
 +.port.sec.intl.miui.com
 +.port.sec.miui.com
-+.portu-ai.com
-+.portu-pl.com
 +.pos.baidu.com
 +.poster.weather.com.cn
 +.pp-cdnfile1pcdn.msstatic.com
@@ -4081,7 +4070,6 @@
 +.tdid.m.qq.com
 +.tdlop7tsme.com
 +.tdrdwhxxgjzhztwxtxsf-dp9ctcz1v8gi.edgeone.dev
-+.teamsportr.shop
 +.techain.baidu.com
 +.techgifts.tradeshow.globalsources.com
 +.tecunonline.com
