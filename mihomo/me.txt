@@ -88,6 +88,7 @@
 +.thetvdb.com
 +.tmdb.org
 +.trakt.tv
++.unpkg.com
 +.viptulz.com
 +.weserv.nl
 +.whxiecheng.com
