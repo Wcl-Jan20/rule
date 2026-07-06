@@ -103,4 +103,3 @@
 +.xy4k.com
 +.ymck.pro
 +.yylx.win
-cdnjs.cloudflare.com
