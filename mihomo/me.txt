@@ -103,5 +103,6 @@
 +.xy4k.com
 +.ymck.pro
 +.yylx.win
+api.revenuecat.com
 cdn.tailwindcss.com
 cdnjs.cloudflare.com
