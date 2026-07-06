@@ -103,4 +103,5 @@
 +.xy4k.com
 +.ymck.pro
 +.yylx.win
+cdn.tailwindcss.com
 cdnjs.cloudflare.com
