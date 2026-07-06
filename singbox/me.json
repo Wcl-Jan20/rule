@@ -2,6 +2,7 @@
   "rules": [
     {
       "domain": [
+        "api.revenuecat.com",
         "cdn.tailwindcss.com",
         "cdnjs.cloudflare.com"
       ]
