@@ -815,7 +815,6 @@
 +.api.platform.letv.com
 +.api.revenuads.com
 +.api.sec.intl.miui.com
-+.api.sec.miui.com
 +.api.setting.intl.miui.com
 +.api.shanghailingye.cn
 +.api.sms.intl.miui.com
@@ -1225,6 +1224,7 @@
 +.chshcms.net
 +.chuiyue.com
 +.ciajifmfsp.com
++.cippe.com.cn
 +.cityhuitech.com
 +.ck.ads.heytapmobi.com
 +.cl-data-f.ads.heytapmobi.com
@@ -3480,6 +3480,7 @@
 +.puds.ucweb.com
 +.puma-api.iqiyi.com
 +.puma-api.ptqy.gitv.tv
++.puma.api.iqiyi.com
 +.pups.baidu.com
 +.pups.bdimg.com
 +.push.app.autohome.com.cn
@@ -3946,7 +3947,6 @@
 +.srd.simba.taobao.com
 +.srqxnvjdd.com
 +.srtb.msn.cn
-+.srv.sec.miui.com
 +.ss.knet.cn
 +.ssac.suning.com
 +.ssai-ads.api.leiniao.com
