@@ -4,7 +4,8 @@
       "domain": [
         "api.revenuecat.com",
         "cdn.tailwindcss.com",
-        "cdnjs.cloudflare.com"
+        "cdnjs.cloudflare.com",
+        "stun.voipstunt.com"
       ]
     },
     {
