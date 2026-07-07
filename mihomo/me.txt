@@ -106,3 +106,4 @@
 api.revenuecat.com
 cdn.tailwindcss.com
 cdnjs.cloudflare.com
+stun.voipstunt.com
