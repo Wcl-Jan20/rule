@@ -20,7 +20,7 @@
   "tag": "filter",
   "type": "remote",
   "format": "source",
-  "url": "https://cdn.jsdelivr.net/gh/77160860/rule@main/singbox/filter.json",
+  "url": "https://cdn.jsdelivr.net/gh/77160860/rule@main/singbox/adblock.json",
   "download_detour": "DIRECT"
 }
 ```
