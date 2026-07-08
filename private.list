@@ -13,7 +13,6 @@ DOMAIN,sing-box-dashboard.sagernet.org
 DOMAIN,www.asusrouter.com
 DOMAIN,www.miwifi.com
 DOMAIN,yacd.metacubex.one
-DOMAIN-REGEX,^[^.]+$
 DOMAIN-SUFFIX,1.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.ip6.arpa
 DOMAIN-SUFFIX,10.in-addr.arpa
 DOMAIN-SUFFIX,100.100.in-addr.arpa
