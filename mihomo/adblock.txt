@@ -256,7 +256,6 @@
 +.abroad.api.comm.intl.miui.com
 +.abroadad.cache.wpscdn.com
 +.abtest-api-data-sg.hoyoverse.com
-+.abtest-api-data.mihoyo.com
 +.abtest-ch.snssdk.com
 +.abtest.alibaba.com
 +.abtest.todesk.com
@@ -453,8 +452,10 @@
 +.adrs.sdo.com
 +.ads-api-o.api.leiniao.com
 +.ads-drcn.platform.hihonorcloud.com
++.ads-dre.platform.hihonorcloud.com
 +.ads-drru.platform.hihonorcloud.com
 +.ads-gdl.imovideo.ru
++.ads-i1.xhscdn.com
 +.ads-i10.xhscdn.com
 +.ads-i2.xhscdn.com
 +.ads-i3.xhscdn.com
@@ -472,6 +473,7 @@
 +.ads-video-al.xhscdn.com
 +.ads-video-al.xhscdn.com.w.cdngslb.com
 +.ads-video-qc.xhscdn.com
++.ads-vp5.xhscdn.com
 +.ads.95516.com
 +.ads.activepower.net
 +.ads.adagent.chacha.com
@@ -523,6 +525,7 @@
 +.adsame.com
 +.adsapi.manhuaren.com
 +.adsapi.togothermany.cn
++.adsbdfs.heytapimage.com
 +.adsc.wasu.tv
 +.adscdn.baidu.com
 +.adscfg.togothermany.cn
@@ -668,6 +671,7 @@
 +.alimama.alicdn.com
 +.alime-pic.oss-cn-hangzhou.aliyuncs.com
 +.alimelog.taobao.com
++.alipansou.com
 +.alipaylog.com
 +.alitui.weibo.com
 +.all.cnzz.com.danuoyi.tbcache.com
@@ -757,6 +761,7 @@
 +.api-access.pangolin-sdk-toutiao2.com
 +.api-access.pangolin-sdk-toutiao3.com
 +.api-access.pangolin-sdk-toutiao4.com
++.api-ad-adapter-mb.wps.com
 +.api-ad-adapter-sg.wps.com
 +.api-ad-adapter.wps.com
 +.api-ad-callback.falconnet.app
@@ -1782,7 +1787,6 @@
 +.f.360.cn
 +.f.qstatic.com
 +.f1.ichong123.com
-+.f8ds5tkidk-sdk.rum.aliyuncs.com
 +.facai383.oss-cn-guangzhou.aliyuncs.com
 +.fakjkwp.cn
 +.falal.cn
@@ -2457,7 +2461,7 @@
 +.jikewan.com
 +.jikklfexh.com
 +.jing.58.com
-+.jintengli.mobi
++.jiuyuntian3.cn
 +.jknrwe.cn
 +.jmacs-m.lazada.co.id
 +.jmacs-m.lazada.co.th
@@ -2522,6 +2526,7 @@
 +.k8velr77p.com
 +.kad.gotokeep.com
 +.kajicam.com
++.kapkh.cn
 +.kb894lngt.com
 +.kbae.qiqqh.cn
 +.kbkb.bet
@@ -2554,6 +2559,7 @@
 +.knowsafe.com
 +.kokojia.com
 +.koowo.com
++.kouclo.com
 +.kpshx.douguo.com
 +.kqg8jh8rk.com
 +.ks-p2p-v2.pull.yximgs.com
@@ -2811,6 +2817,7 @@
 +.lop.lamimi.cn
 +.lowa202606.myshoplaza.com
 +.lpmzt.cn
++.lrphk.cn
 +.lrswl.com
 +.lstat.youku.com
 +.luaqxb.rainso.com
@@ -2913,6 +2920,7 @@
 +.metaword.cn
 +.metok.sys.miui.com
 +.metric.huya.com
++.metric.nuonuo.com
 +.metrics-dra.dt.dbankcloud.cn
 +.metrics-dra.dt.dbankcloud.com
 +.metrics-drcn.dt.dbankcloud.cn
@@ -3509,6 +3517,7 @@
 +.qguwoq.cn
 +.qhonzpl.cn
 +.qianclick.baidu.com
++.qienews.cn
 +.qijpaih.cn
 +.qiniuyunxz.yxflzs.com
 +.qiuxl11.cn
@@ -4296,7 +4305,6 @@
 +.trackcommon.hujiang.com
 +.tracker-00.qvb.qcloud.com
 +.tracker.cdnbye.com
-+.tracker.chat.bilibili.com
 +.tracker.citicsinfo.com
 +.tracker.dcdn.baidu.com
 +.tracker.fengkongcloud.com
@@ -4539,7 +4547,6 @@
 +.v6-reading-ad.qznovelvod.com
 +.v84tz11w7.com
 +.v9-reading-ad.qznovelvod.com
-+.v95-aw-reading-ad.qznovelvod.com
 +.v95-se-zjwztc-reading-ad.qznovelvod.com
 +.v95-zjjx2tc-reading-ad.qznovelvod.com
 +.v96-sz-daily-reading-ad.qznovelvod.com
@@ -4618,6 +4625,8 @@
 +.wan.sogou.com
 +.wan.youku.com
 +.wangmeng.baidu.com
++.wangsu-smetrics.redhat.com.edgekey.net
++.wangsu-smetrics.redhat.com.edgekey.net.wanakadns.net
 +.wanproxy.127.net
 +.wap.koudaitong.com
 +.wbapp.mobile.sina.cn
@@ -4627,6 +4636,7 @@
 +.wct.softonic.cn
 +.wdp5rczwlp.com
 +.wdpkx.cn
++.wdr160gz.dayugslb.com
 +.weather-community-drcn.weather.dbankcloud.cn
 +.web-trace.ksapisrv.com
 +.web.900.la
@@ -4645,6 +4655,7 @@
 +.webterren.com
 +.webtrack.pospal.cn
 +.weidianyuedu.com
++.weilayun.com
 +.weishi.baidu.com
 +.wenku-cms.bj.bcebos.com
 +.wenxue.youzhicn.com
