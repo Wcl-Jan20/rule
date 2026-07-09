@@ -24,7 +24,7 @@ singbox:
   "download_detour": "DIRECT"
 }
 ```
-mmihomo:
+mihomo:
 ```json
 rule-anchor:
   ip: &ip {type: http, interval: 86400, behavior: ipcidr, format: mrs}
