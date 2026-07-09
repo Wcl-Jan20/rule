@@ -4,7 +4,7 @@
 
 仓库 Settings ----> Actions ----> General ----> Workflow permissions ----> Read and write permissions 勾选上
 
-规则集源文件写法eg:
+规则集源文件写法eg:  
 singbox:
 ```json
 {
