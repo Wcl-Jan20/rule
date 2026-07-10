@@ -61,7 +61,6 @@
 +.1rtb.net
 +.1s8pj.cn
 +.1s8zfj6p4.com
-+.1sapp.com
 +.1tvg524vih.com
 +.1uo9djbnsr.com
 +.1wkg.cn
@@ -71,7 +70,6 @@
 +.21.fh21static.com
 +.2144.cn
 +.2345.cn
-+.2345.com
 +.25662zubo23739.com
 +.25t9uxgnx.com
 +.2607.cn
@@ -183,6 +181,7 @@
 +.8x5vviy4r2.com
 +.92p3c8lgqt.com
 +.93692zubo66936.com
++.93ta.cn
 +.93txjw4rt2.com
 +.961.com
 +.96382zubo66756.com
@@ -332,13 +331,13 @@
 +.ad.mi.com
 +.ad.mobile.youku.com
 +.ad.nvdvr.cn
-+.ad.oceanengine.com
 +.ad.open.api.jihuoniao.com
 +.ad.ourgame.com
 +.ad.partner.gifshow.com
 +.ad.qingting.fm
 +.ad.qq.com
 +.ad.qyer.com
++.ad.report.jihuoniao.com
 +.ad.richmob.cn
 +.ad.shunchangzhixing.com
 +.ad.sina.com.cn
@@ -457,7 +456,6 @@
 +.ads-drru.platform.hihonorcloud.com
 +.ads-gdl.imovideo.ru
 +.ads-i1.xhscdn.com
-+.ads-i1.xhscdn.com.cdn.dnsv1.com
 +.ads-i10.xhscdn.com
 +.ads-i2.xhscdn.com
 +.ads-i2.xhscdn.com.w.cdngslb.com
@@ -648,7 +646,6 @@
 +.ahov1.top
 +.ai.bioon.com
 +.ai.m.taobao.com
-+.ai.taobao.com
 +.aicleaner.shouji.360.cn
 +.aiseet.aa.atianqi.com
 +.aivaylaco.com
@@ -677,6 +674,9 @@
 +.alliance-adreq-asia.vivoglobal.com
 +.allyes.cn
 +.allyes.com
++.alpinuoutdoor.shop
++.alpinus-pl.shop
++.alpinusports.shop
 +.als.baidu.com
 +.am.szhome.com
 +.amap-aos-info-nogw.amap.com
@@ -719,6 +719,7 @@
 +.analytics.oceanengine.com.bytedns1.com
 +.analytics.oceanengine.com.queniuiq.com
 +.analytics.oceanengine.com.w.cdngslb.com
++.analytics.partnerboost.com
 +.analytics.pushgrid.net
 +.analytics.shop.hisense.com
 +.analytics.sixt.cn
@@ -802,7 +803,6 @@
 +.api.d.xiaomi.com
 +.api.device.xiaomi.net
 +.api.dewmobile.net
-+.api.e-toys.cn
 +.api.g.micloud.xiaomi.net
 +.api.hdtv.letv.com
 +.api.hzsanjiaomao.com
@@ -869,6 +869,7 @@
 +.app.log.nf.migu.cn
 +.app.miui.com
 +.app.moji001.com
++.app.partnerboost.com
 +.app.storage.yunvm.com
 +.app.update.lenovo.com
 +.appadapi.ihuman.com
@@ -993,6 +994,7 @@
 +.b73223085-49c6-4dca-a2f1-4722014079bf-dpcj8stbzfif.edgeone.dev
 +.b73223085-49c6-4dca-a2f1-4722014079bf.edgeone.dev
 +.b73223085-49c6-4dca-a2f1-4722014079fb-dpi4fgipupcs.edgeone.dev
++.b74364238-d49c-4f21-a234-d47e9697ee92-dpowf5bnj9al.edgeone.dev
 +.b8b4ix7bj.com
 +.badjs.weixinbridge.com
 +.baichuan-sdk.alicdn.com
@@ -1014,8 +1016,10 @@
 +.bc.qunar.com
 +.bchina-1.xsfaya.com
 +.bcomniture.focus.de
++.bd-js1.2345.com
 +.bd-p2p-v2.pull.yximgs.com
 +.bd-p2p.pull.yximgs.com
++.bd-retrieval1.2345.com
 +.bd-s.baixing.net
 +.bd.czxuexi.com
 +.bd.hd.sohu.com
@@ -1037,6 +1041,7 @@
 +.bdapi.ads.heytapmobi.com
 +.bdasd.chdbook.cn
 +.bdcdncnc.inter.71edge.com
++.bdcode.2345.com
 +.bdcode.35d1.com
 +.bdcode.qinglue.com
 +.bdcode.youke.com
@@ -1093,6 +1098,8 @@
 +.bjmantis.net
 +.bjvvqu.cn
 +.bkt.clouddn.com
++.blackhome.club
++.blanked.edgeone.dev
 +.blog.ivup.cn
 +.bm.alimama.cn
 +.bm.h576.com
@@ -1115,6 +1122,7 @@
 +.bro.flyme.cn
 +.browsercfg-drcn.cloud.dbankcloud.cn
 +.browserkernel.baidu.com
++.brubeck-sports.shop
 +.brubecksports.shop
 +.bs2site.at
 +.bsbaswq.cn
@@ -1213,6 +1221,8 @@
 +.cengqinglin.cn
 +.ceshi127722.obs.cn-north-4.myhuaweicloud.com
 +.cfg.imtt.qq.com
++.cfgc.flysleep.cn
++.cfgc.zztfly.com
 +.cgicol.amap.com
 +.cgigc.com.cn
 +.chance-ad.com
@@ -1270,7 +1280,6 @@
 +.clog.miguvideo.com
 +.clog.tanshudata.com
 +.cloud-log.yy.com
-+.cloudcdn.dopa.com
 +.cloudcollect.meitudata.com
 +.cloudconf.fengkongcloud.com
 +.cloudservice14.kingsoft-office-service.com
@@ -1785,8 +1794,10 @@
 +.f.360.cn
 +.f.qstatic.com
 +.f1.ichong123.com
++.f40914238-3da7-4de7-8dee-307e6692cfb8.edgeone.dev
 +.facai383.oss-cn-guangzhou.aliyuncs.com
 +.fakjkwp.cn
++.fakxqq.cn
 +.falal.cn
 +.fancyapi.com
 +.fancydsp.com
@@ -1818,6 +1829,8 @@
 +.fenxi.com
 +.fexclick.baidu.com
 +.fight-pl.shop
++.fighteres.shop
++.fighterspor.shop
 +.fighterspors.shop
 +.fighterzz.shop
 +.file.blackint3.com
@@ -1918,10 +1931,13 @@
 +.gameanalytics.com
 +.ganjituiguang.ganji.com
 +.gaoshouyou.com
++.garden-home.shop
 +.garden-homes.shop
 +.gardendodomu.shop
 +.gardendom.shop
 +.gardendomowy.shop
++.gardenpl.club
++.gardenshop.top
 +.gardensztabik.shop
 +.gate.datacaciques.com
 +.gatecollect.kugou.com
@@ -1954,6 +1970,7 @@
 +.gg86.pinggu.org
 +.gg88.bj.bcebos.com
 +.ggc.cmvideo.cn
++.ggcode.2345.com
 +.ggdm1.nhaidu.net
 +.ggjs.d17.cc
 +.ggkhhfhhfhflhjdcxcvbthg-dpfmbose3uxq.edgeone.dev
@@ -1971,6 +1988,7 @@
 +.gid.tapapis.cn
 +.gimg.baidu.com
 +.giocdn.com
++.gistalco.shop
 +.gjapplog.uc.cn
 +.gjapplog.ucweb.com
 +.gjtrack.uc.cn
@@ -1990,11 +2008,13 @@
 +.go.hangzhou.com.cn
 +.go.shutterstock.com
 +.go.tuev.cn
++.goalpinus.shop
 +.goblin.hupu.com
 +.godloveme.cn
 +.godunns.shop
 +.goforandroid.com
 +.gojunkclean.cn
++.gokutahya.shop
 +.goldbye.vicp.net
 +.gongxifc.com
 +.google-analytics-cn.com
@@ -2123,6 +2143,7 @@
 +.hgkzl.cn
 +.hgpbhuj.cn
 +.hhttm.top
++.hi-mountain.shop
 +.hi.xiunm.cn
 +.hiido.com
 +.hijack.baidu.com
@@ -2145,7 +2166,20 @@
 +.hnltcw.com
 +.hnol.net
 +.hoka-shoes.myshoplaza.com
++.home-you.click
++.home-you.club
 +.home.edm.globalsources.com
++.homeyous.shop
++.homla-sklep.club
++.homla.cfd
++.homla.club
++.homla.cyou
++.homla.fashion
++.homla.icu
++.homla.ink
++.homladom.homes
++.homladom.shop
++.homlas.homes
 +.honorsearch-dra.hiboard.hihonorcloud.com
 +.honorsearch-drcn.hiboard.hihonorcloud.com
 +.honorsearch-dre.hiboard.hihonorcloud.com
@@ -2211,6 +2245,9 @@
 +.huichuan-mc.sm.cn
 +.huichuan.sm.cn
 +.huishenghuiying.com.cn
++.huo07100hy.com
++.huo07110hy.com
++.huo07120hy.com
 +.huoche.com.cn
 +.huodong.m.taobao.com
 +.huohuo.huamuwo.com
@@ -2631,7 +2668,6 @@
 +.liveats-vod.video.ptqy.gitv.tv
 +.livemonitor.huan.tv
 +.livetech.shopee.co.id.txlivecdn.com
-+.livetech.shopee.co.th.txlivecdn.com
 +.livetech.shopee.com.br.tlivecdn.com
 +.livetech.shopee.com.br.txlivecdn.com
 +.livetech.shopee.vn.txlivecdn.com
@@ -2646,7 +2682,6 @@
 +.lnk8.cn
 +.lnme1q1qa.com
 +.load.tbyvvwvv.plasmatreatment.cn
-+.localads.chengzijianzhan.cn
 +.locateanyphone.net
 +.location.ximalaya.com
 +.lockview.cn
@@ -2834,6 +2869,7 @@
 +.m.simba.taobao.com
 +.m.txtxr.com
 +.m.uczzd.cn
++.m.yocvn.com
 +.m1.81312.com
 +.m1.baidu.com
 +.m1.kuanff.com
@@ -3233,7 +3269,6 @@
 +.online.sh.cn
 +.onrt-stsdk.vivo.com.cn
 +.onrt-stsdk.vivoglobal.com
-+.onrunningshop.com
 +.onzj79fce.com
 +.ooniu.com
 +.oozushirp.com
@@ -3328,7 +3363,6 @@
 +.partner.toutiao.com
 +.partner.uc.cn
 +.partnerad.l.google.com
-+.partnerboost.com
 +.passport.acla.org.cn
 +.patriot.cs.pp.cn
 +.pay.aqiu6.com
@@ -3347,6 +3381,7 @@
 +.pcfg.wps.cn
 +.pcm-img.zhls.qq.com
 +.pcmactivity.chinacloudsites.cn
++.pcmanage.cn
 +.pcmx.autohome.com.cn
 +.pco-sm-log.tantanapp.com
 +.pcookie.aliexpress.com
@@ -3392,6 +3427,8 @@
 +.pingmid.qq.com
 +.pingtas.qq.com
 +.pitbull-pl.club
++.pitbullsport.club
++.pitbullsports.club
 +.pitbullwestcoast.shop
 +.pl-stalco.shop
 +.pl.cp31.ott.cibntv.net
@@ -3542,6 +3579,7 @@
 +.qujishu.com
 +.qw2v.taoxiehui.cn
 +.qwe0231141.bj.bcebos.com
++.r-golsports.club
 +.r.51wnl-cq.com
 +.r.browser.miui.com
 +.r.mail.163.com
@@ -3574,6 +3612,7 @@
 +.reke.at.sohu.com
 +.reksaidnslog.security.mihoyo.com
 +.release.baidu.com
++.reloader-dpffdavrss4p.edgeone.dev
 +.renacious.nwwadq.cn
 +.renzhen8.cn
 +.report-america.agora.io
@@ -3700,7 +3739,6 @@
 +.sa.adidas.cn
 +.sa.sina.cn
 +.saad.ms.zhangyue.net
-+.sabbiremart.com
 +.safe.ucweb.com
 +.safebrowsing.urlsec.gg.com
 +.saitef.cn
@@ -3828,7 +3866,6 @@
 +.simaba.m.taobao.com
 +.simaba.taobao.com
 +.simba.6.cn
-+.simicloud.com
 +.sinawap.com
 +.sirsplajp.com
 +.sirweara.com
@@ -3949,11 +3986,18 @@
 +.stalco-pl.club
 +.stalco-sklep.online
 +.stalco-sklep.store
++.stalco.cc
++.stalco.click
 +.stalco.club
++.stalco.icu
++.stalco.ink
 +.stalco.top
 +.stalco24-pl.shop
 +.stalcom-pl.shop
 +.stalconar.club
++.stalconars.club
++.stalconarse.club
++.stalcopl-24.shop
 +.stalcopl24.shop
 +.stalcos.shop
 +.stalcosklep.top
@@ -4293,6 +4337,7 @@
 +.trackcommon.hujiang.com
 +.tracker-00.qvb.qcloud.com
 +.tracker.cdnbye.com
++.tracker.chat.bilibili.com
 +.tracker.citicsinfo.com
 +.tracker.dcdn.baidu.com
 +.tracker.fengkongcloud.com
@@ -4352,7 +4397,6 @@
 +.tumeite.cn
 +.tunion-api.m.taobao.com
 +.turbo2sdk-push.oupeng.com
-+.tuxi.com.cn
 +.tvabqt.cn
 +.tvdpebx.cn
 +.tvuser-ch.cedock.com
@@ -4715,7 +4759,6 @@
 +.www.che.com
 +.www.claiks.com
 +.www.destinationurl.com
-+.www.dopa.com
 +.www.dualspace.com
 +.www.fm120.com
 +.www.histar.com
@@ -4800,9 +4843,9 @@
 +.xryrylt.cn
 +.xs.dmzj.com
 +.xssncc2tv.com
-+.xttaff.com
 +.xue.zbyw.cn
 +.xueaaaw.cn
++.xukou.net
 +.xulizui6.com
 +.xundupdf.com
 +.xvhttu3c9.com
