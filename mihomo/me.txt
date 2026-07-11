@@ -63,6 +63,7 @@
 +.jsdelivr.net
 +.libvio.mov
 +.ln632.com
++.lunarisvault.com
 +.macked.app
 +.macked.homes
 +.mihdr.top

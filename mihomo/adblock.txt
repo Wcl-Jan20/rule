@@ -1221,7 +1221,6 @@
 +.cengqinglin.cn
 +.ceshi127722.obs.cn-north-4.myhuaweicloud.com
 +.cfg.imtt.qq.com
-+.cfgc.flysleep.cn
 +.cfgc.zztfly.com
 +.cgicol.amap.com
 +.cgigc.com.cn
@@ -2695,7 +2694,6 @@
 +.log-api.pangolin-sdk-toutiao.com.bytedns1.com
 +.log-api.pangolin-sdk-toutiao.com.queniuyk.com
 +.log-api.pangolin-sdk-toutiao.com.w.cdngslb.com
-+.log-auth.flysleep.cn
 +.log-auth.zztfly.com
 +.log-dra.platform.hihonorcloud.com
 +.log-drcn.platform.hihonorcloud.com
