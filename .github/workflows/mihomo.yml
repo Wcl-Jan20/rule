@@ -20,7 +20,7 @@ jobs:
       - name: Install Mihomo
         shell: bash
         run: |
-          curl -L -o mihomo.deb https://github.com/MetaCubeX/mihomo/releases/download/v1.19.27/mihomo-linux-amd64-v1.19.27.deb
+          curl -L -o mihomo.deb https://github.com/MetaCubeX/mihomo/releases/download/v1.19.28/mihomo-linux-amd64-v1.19.28.deb
           mkdir -p temp_deb
           dpkg -x mihomo.deb temp_deb
           mv temp_deb/usr/bin/mihomo ./mihomo-bin
