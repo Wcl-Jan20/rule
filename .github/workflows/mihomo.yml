@@ -90,7 +90,9 @@ jobs:
                   rule_value = parts[1] if len(parts) > 1 else ''
                   if not rule_value:
                       return None
-                  if rule_type in ['DOMAIN', 'FULL', 'DOMAIN-KEYWORD']:
+                  if rule_type == 'DOMAIN-KEYWORD':
+                      return None
+                  if rule_type in ['DOMAIN', 'FULL']:
                       return rule_value
                   elif rule_type in ['DOMAIN-SUFFIX', 'HOST-SUFFIX']:
                       if rule_value.startswith('+.'):
