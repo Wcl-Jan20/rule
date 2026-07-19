@@ -1,11 +1,6 @@
 {
   "rules": [
     {
-      "domain": [
-        "api.revenuecat.com"
-      ]
-    },
-    {
       "domain_suffix": [
         "10135.com",
         "28.al",
@@ -60,8 +55,6 @@
         "gh-proxy.org",
         "ghfast.top",
         "gugu3.com",
-        "hbbx.top",
-        "hbbz.top",
         "hbmysy.com",
         "heimuer.tv",
         "hkybqufgh.com",
@@ -89,7 +82,6 @@
         "ryzypics.com",
         "shangchengtong.net",
         "shrekmedia.org",
-        "snssdk.com",
         "tailscale.com",
         "tampermonkey.net",
         "tbedu.top",
@@ -103,7 +95,6 @@
         "wogg.lol",
         "wogg.net",
         "worklook.top",
-        "wpurl.cc",
         "wupgapy.cc",
         "xb6v.com",
         "xdrig.com",
