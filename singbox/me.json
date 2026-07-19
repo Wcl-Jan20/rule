@@ -2,8 +2,7 @@
   "rules": [
     {
       "domain": [
-        "api.revenuecat.com",
-        "cdnjs.cloudflare.com"
+        "api.revenuecat.com"
       ]
     },
     {
