@@ -103,4 +103,3 @@
 +.ymck.pro
 +.yylx.win
 api.revenuecat.com
-cdnjs.cloudflare.com
