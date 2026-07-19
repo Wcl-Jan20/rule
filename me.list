@@ -7,20 +7,15 @@ DOMAIN-SUFFIX,macked.app
 DOMAIN-SUFFIX,macked.homes
 DOMAIN-SUFFIX,istatmenus.app
 DOMAIN-SUFFIX,tampermonkey.net
+DOMAIN-SUFFIX,nyc.mn
+DOMAIN-SUFFIX,oracle.com
+DOMAIN-SUFFIX,oraclecloud.com
+DOMAIN-SUFFIX,riotgames.com
 DOMAIN-SUFFIX,earthol.me
 DOMAIN-SUFFIX,earthol.com
 DOMAIN-SUFFIX,tailscale.com
 DOMAIN-SUFFIX,enaturehome.com
-DOMAIN-SUFFIX,wpurl.cc
 DOMAIN-SUFFIX,shangchengtong.net
-DOMAIN-SUFFIX,nyc.mn
-DOMAIN-SUFFIX,snssdk.com
-DOMAIN-SUFFIX,oracle.com
-DOMAIN-SUFFIX,oraclecloud.com
-DOMAIN-SUFFIX,hbbx.top
-DOMAIN-SUFFIX,hbbz.top
-DOMAIN-SUFFIX,riotgames.com
-DOMAIN,api.revenuecat.com
 # 影视仓
 DOMAIN-SUFFIX,ottiptv.cc
 DOMAIN-SUFFIX,wogg.net
