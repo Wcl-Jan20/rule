@@ -1,11 +1,13 @@
 name: singbox
 on:
+  #自动编译：当Auto-Clean运行完成后
+  workflow_run:
+    workflows: ["Auto-Clean"]
+    types:
+      - completed
   push:
-    branches: [ main ]
-  workflow_dispatch:
-  schedule:
-    - cron: '0 20 * * *'
-
+    branches:
+      - main
 permissions:
   contents: write
 
