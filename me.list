@@ -76,9 +76,10 @@ DOMAIN-SUFFIX,jimxtc.com
 DOMAIN-SUFFIX,cachefly.net
 # emby
 DOMAIN-SUFFIX,28.al
-DOMAIN-SUFFIX,aemby.de
-DOMAIN-SUFFIX,shrekmedia.org
 DOMAIN-SUFFIX,eu.org
+DOMAIN-SUFFIX,aemby.de
+DOMAIN-SUFFIX,gossip.lat
+DOMAIN-SUFFIX,shrekmedia.org
 DOMAIN-SUFFIX,bangumi.ca
 DOMAIN-SUFFIX,lunarisvault.com
 DOMAIN-SUFFIX,ciallo.party
