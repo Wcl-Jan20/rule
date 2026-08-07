@@ -33,6 +33,7 @@
 +.cloudflareprod.com
 +.cloudflarestaging.com
 +.cloudflarestoragegw.com
++.db-ip.com
 +.dytt-cinema.com
 +.dytt-film.com
 +.dytt-img.com
@@ -83,6 +84,7 @@
 +.shangchengtong.net
 +.shrekmedia.org
 +.snssdk.com
++.staryuki.com
 +.tailscale.com
 +.tampermonkey.net
 +.tbedu.top
