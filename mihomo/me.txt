@@ -84,6 +84,7 @@
 +.shangchengtong.net
 +.shrekmedia.org
 +.snssdk.com
++.staryuki.com
 +.tailscale.com
 +.tampermonkey.net
 +.tbedu.top
