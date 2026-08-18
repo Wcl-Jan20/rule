@@ -20,6 +20,19 @@ DOMAIN-SUFFIX,earthol.com
 DOMAIN-SUFFIX,tailscale.com
 DOMAIN-SUFFIX,enaturehome.com
 DOMAIN-SUFFIX,shangchengtong.net
+# emby
+DOMAIN-SUFFIX,28.al
+DOMAIN-SUFFIX,aemby.de
+DOMAIN-SUFFIX,gossip.lat
+DOMAIN-SUFFIX,teawaya.com
+DOMAIN-SUFFIX,staryuki.com
+DOMAIN-SUFFIX,shrekmedia.org
+DOMAIN-SUFFIX,bangumi.ca
+DOMAIN-SUFFIX,ciallo.party
+DOMAIN-SUFFIX,tmdb.org
+DOMAIN-SUFFIX,trakt.tv
+DOMAIN-SUFFIX,thetvdb.com
+DOMAIN-SUFFIX,themoviedb.org
 # 影视仓
 DOMAIN-SUFFIX,ottiptv.cc
 DOMAIN-SUFFIX,wogg.net
@@ -75,19 +88,6 @@ DOMAIN-SUFFIX,wupgapy.cc
 DOMAIN-SUFFIX,hbmysy.com
 DOMAIN-SUFFIX,jimxtc.com
 DOMAIN-SUFFIX,cachefly.net
-# emby
-DOMAIN-SUFFIX,28.al
-DOMAIN-SUFFIX,aemby.de
-DOMAIN-SUFFIX,gossip.lat
-DOMAIN-SUFFIX,teawaya.com
-DOMAIN-SUFFIX,staryuki.com
-DOMAIN-SUFFIX,shrekmedia.org
-DOMAIN-SUFFIX,bangumi.ca
-DOMAIN-SUFFIX,ciallo.party
-DOMAIN-SUFFIX,tmdb.org
-DOMAIN-SUFFIX,trakt.tv
-DOMAIN-SUFFIX,thetvdb.com
-DOMAIN-SUFFIX,themoviedb.org
 # cloudflare@cn
 DOMAIN-SUFFIX,cf-ns.com
 DOMAIN-SUFFIX,cf-ns.net
