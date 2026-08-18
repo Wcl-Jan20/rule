@@ -12,7 +12,6 @@
 +.bq0.net
 +.bttwo.org
 +.cachefly.net
-+.cc.cd
 +.cf-china.info
 +.cf-ns.com
 +.cf-ns.net
@@ -64,7 +63,6 @@
 +.kdns.fr
 +.libvio.mov
 +.ln632.com
-+.lunarisvault.com
 +.macked.app
 +.macked.homes
 +.mihdr.top
