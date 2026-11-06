@@ -37,6 +37,7 @@
 +.earthol.com
 +.earthol.me
 +.enaturehome.com
++.feiwang.cc
 +.findjs.top
 +.ggtvb.cc
 +.gh-proxy.com
@@ -54,6 +55,7 @@
 +.lnh7.com
 +.macked.app
 +.macked.homes
++.maowushi.com
 +.mihdr.top
 +.miqk.cc
 +.mk1080.top
