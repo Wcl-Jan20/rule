@@ -3,6 +3,7 @@
 +.acgnya.com
 +.akamaized.net
 +.aliapp.org
++.api.palera.in
 +.app.qingyingyong.net
 +.auete.top
 +.baidu-preferred.cc
@@ -49,7 +50,6 @@
 +.hxx2023.cc
 +.hxx2027.cc
 +.istatmenus.app
-+.jsdelivr.net
 +.kdns.fr
 +.libvio.mov
 +.lnh7.com
@@ -60,7 +60,6 @@
 +.miqk.cc
 +.mk1080.top
 +.mmstat.com
-+.models.dev
 +.muou.asia
 +.muou.site
 +.nn.ci
